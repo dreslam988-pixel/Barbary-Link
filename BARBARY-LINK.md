@@ -36,7 +36,7 @@ The ARM release APK and the emulator test APK had identical optimized `classes.d
 
 Use the manual Windows workflow or `scripts/package.ps1`. Build and stage with `-StageOnly`. Put the separately signed Android APK in the final stage as `Barbary-Link.apk` before assembling the final NSIS installer. This supports the app's phone-install feature without fetching an original-project APK.
 
-Native builds, fork update isolation, visible Home screenshots and a preflight install/launch/uninstall test passed in the referenced run. The final installer is assembled afterward with the signed APK and owner publisher metadata. It must not be described as the exact installer executed by that preflight test.
+Native builds, fork update isolation, visible Home screenshots and a preflight install/launch/uninstall test passed in the referenced run. The final installer is assembled afterward with the signed APK and owner publisher metadata and full original license texts. It must not be described as the exact installer executed by that preflight test.
 
 No trusted Windows Authenticode certificate is present. Windows may show an unknown-publisher warning. Do not disable security tools to work around it.
 

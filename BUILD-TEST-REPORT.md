@@ -4,7 +4,9 @@ Date: 2026-11-22. Product version: 1.0.0.
 
 ## Provenance
 
-The distributed Android and native Windows application code was compiled from commit `1b066ad`. The source handoff also contains later documentation, a corrected crash-signature test fixture, an additional Rust test vector, and installer publisher metadata. Those later edits do not alter Android production code or the native Windows executable code.
+The distributed Android and native Windows application code was compiled from commit `1b066ad`. The source handoff also contains later documentation, a corrected crash-signature test fixture, an additional Rust test vector, installer publisher metadata, QA fixture settings, and complete original license texts in the delivery packages. Those later edits do not alter Android production code or the native Windows executable code.
+
+The license texts are added as assets without changing any existing Android ZIP entry. They are also included in the Windows installer as a LICENSES directory.
 
 All-platform run:
 https://github.com/dreslam988-pixel/Barbary-Link/actions/runs/45030484144
@@ -47,7 +49,12 @@ The Windows job passed:
 - Preflight installer creation.
 - Silent installation, application launch, shortcuts/firewall checks and uninstallation.
 
-The preflight did not contain the separately signed Android APK. The final installer adds that APK and changes the installer CompanyName/installed-app Publisher to the Arabic owner brand. These final assembly differences were not executed in a Windows install test.
+The preflight did not contain the separately signed Android APK. The final installer adds that APK, the full LICENSES directory, and changes the installer CompanyName/installed-app Publisher to the Arabic owner brand. These final assembly differences were not executed in a Windows install test.
+
+A focused repeat validation reused the same native binaries with the corrected fixture and owner Publisher metadata:
+https://github.com/dreslam988-pixel/Barbary-Link/actions/runs/45036570329
+
+It passed install/update/launch/shortcuts/firewall/uninstall checks. Its actual Home and one walkthrough page captures were inspected. This establishes that visible walkthrough page, not every onboarding step or Windows Settings.
 
 The final installer is intended to be one self-contained x64 EXE. It is not Authenticode-signed with a trusted publisher certificate.
 

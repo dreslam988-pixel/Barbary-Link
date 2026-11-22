@@ -228,6 +228,7 @@ Copy-Item (Join-Path $crt.FullName '*.dll') $stage
 
 # Licenses.
 Copy-Item (Join-Path $root 'LICENSE') (Join-Path $stage 'LICENSE.txt')
+Copy-Item (Join-Path $root 'LICENSES') (Join-Path $stage 'LICENSES') -Recurse -Force
 Invoke-Native "writing the notices" { cargo xtask notices (Join-Path $stage 'THIRD-PARTY-NOTICES.txt') }
 
 # The icon build.rs drew for the .exe, and Sparse Package assets for Windows Share sheet.
