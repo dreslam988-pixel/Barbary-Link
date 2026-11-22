@@ -30,6 +30,10 @@ import kotlin.math.hypot
  * the wheel scrolls, and typing goes into the focused text field.
  */
 class InputService : AccessibilityService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val main = Handler(Looper.getMainLooper())
 
     /** The finger's way so far, as fractions of the screen, and when it went down. */

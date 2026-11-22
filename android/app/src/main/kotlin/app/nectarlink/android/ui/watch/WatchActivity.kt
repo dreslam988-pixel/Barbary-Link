@@ -70,6 +70,10 @@ import kotlinx.coroutines.delay
  * few seconds. Nothing else goes to the PC.
  */
 class WatchActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private data class WatchTarget(
         val pcId: String,
         val pcName: String,

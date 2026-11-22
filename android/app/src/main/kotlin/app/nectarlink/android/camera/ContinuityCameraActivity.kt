@@ -104,6 +104,10 @@ import kotlinx.coroutines.withContext
  * requests a photo (`"photo"`) or document scan (`"scan"`).
  */
 class ContinuityCameraActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private var pcId by mutableStateOf("")
     private var requestId by mutableStateOf("")
     private var initialMode by mutableStateOf("photo")

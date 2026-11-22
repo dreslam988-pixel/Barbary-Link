@@ -1223,7 +1223,7 @@ fun SettingsScreen(
                     SettingRowDivider()
                     Text(stringResource(R.string.about_version, BuildConfig.VERSION_NAME), style = MaterialTheme.typography.bodyMedium)
                     Text("نسخة إسلام البربري • برامج إسلام البربري", style = MaterialTheme.typography.bodySmall)
-                    Text("Based on NectarLink • GPL-3.0-or-later / MPL-2.0", style = MaterialTheme.typography.bodySmall)
+                    Text("مبني على NectarLink • GPL-3.0-or-later / MPL-2.0", style = MaterialTheme.typography.bodySmall)
                 }
             }
             // Community: Discord, news, the code and support, side by side.

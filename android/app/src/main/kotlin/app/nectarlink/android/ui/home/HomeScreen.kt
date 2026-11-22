@@ -263,7 +263,7 @@ fun HomeScreen(
     var browseFilesPcId by remember { mutableStateOf<String?>(null) }
     var pulsingTarget by remember { mutableStateOf<GuideHighlightTarget?>(null) }
     // One card at a time: What's new, then trying Hive, then Discord.
-    val communityInviteVisible = showCommunityInvite && !showWhatsNewGuideBanner && !showHiveInvite
+    val communityInviteVisible = false
     // Keep a screen of cards composed on each side, so scrolling back does not rebuild them.
     @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
     val listState = androidx.compose.foundation.lazy.rememberLazyListState(
@@ -301,8 +301,8 @@ fun HomeScreen(
         } else {
             val orderedKeys = buildList {
                 add("home_header")
-                if (showWhatsNewGuideBanner) add("whats_new_guide_banner")
-                if (showHiveInvite && !showWhatsNewGuideBanner) add("hive_invite")
+
+
                 if (communityInviteVisible) add("community_invite")
                 if (state.ringingFrom != null) add("ringing_banner")
                 if (mirrorSession.active) add("mirror_active_banner")
@@ -382,7 +382,7 @@ fun HomeScreen(
                     Text(stringResource(R.string.home_guide_title))
                 }
                 // What's new (#461), with a dot after an update brought something.
-                WhatsNewButton()
+                // Release notes remain available from Settings > About.
                 // Reconnects and syncs with the PCs; spins once to say so.
                 val spin = remember { androidx.compose.animation.core.Animatable(0f) }
                 val scope = rememberCoroutineScope()
@@ -406,7 +406,7 @@ fun HomeScreen(
                 }
             }
         }
-        if (showWhatsNewGuideBanner) {
+        if (false) {
             item(key = "whats_new_guide_banner", contentType = "banner") {
                 WhatsNewFeaturesGuideCard(
                     onOpenGuide = {
@@ -418,7 +418,7 @@ fun HomeScreen(
             }
         }
         // After the What's new card, one at a time.
-        if (showHiveInvite && !showWhatsNewGuideBanner) {
+        if (false) {
             item(key = "hive_invite", contentType = "banner") {
                 HiveInviteCard(onTry = onTryHive, onDismiss = onDismissHiveInvite)
             }
@@ -701,6 +701,7 @@ fun HomeScreen(
             ) {
                 PcCard(
                     device = device,
+                    revealTools = pulsingTarget == GuideHighlightTarget.HOME_PC_AUDIO,
                     ringing = device.id in state.ringingDevices,
                     onRing = onRing,
                     onSendFiles = onSendFiles,
@@ -1090,9 +1091,6 @@ private fun NoPairedPcCard(
             }
             FilledTonalButton(onClick = onOpenWalkthrough) {
                 Text(stringResource(R.string.guide_open_walkthrough))
-            }
-            OutlinedButton(onClick = onOpenFeaturesGuide) {
-                Text(stringResource(R.string.guide_title))
             }
         }
     }
@@ -1526,6 +1524,7 @@ private fun PcCard(
     /** Whether this phone's microphone streams to this PC now. */
     micOn: Boolean = false,
     onToggleMic: (Boolean) -> Unit = {},
+    revealTools: Boolean = false,
 ) {
     val pickFiles = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
         if (uris.isNotEmpty()) onSendFiles(device.id, uris)
@@ -1681,84 +1680,16 @@ private fun PcCard(
             }
             Spacer(Modifier.height(16.dp))
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                // 1. Primary Workspace Bento Grid (2x2): Control PC, Deck, Desk Mode, Webcam
-                Text(
-                    text = stringResource(R.string.home_section_screen),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = sectionLabelColor,
-                    modifier = Modifier.padding(start = 2.dp),
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                Button(
+                    onClick = { onRemote(device.id) },
+                    enabled = device.online,
+                    colors = primaryBtn,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
                 ) {
-                    Button(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = primaryBtn,
-                        onClick = { onRemote(device.id) },
-                        modifier = Modifier.weight(1f).heightIn(min = 46.dp),
-                    ) {
-                        Icon(
-                            imageVector = RemotePcIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(R.string.action_remote_pc))
-                    }
-                    FilledTonalButton(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = tonal,
-                        onClick = { onDeck(device.id) },
-                        modifier = Modifier.weight(1f).heightIn(min = 46.dp),
-                    ) {
-                        Icon(
-                            imageVector = DeckGridIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(R.string.action_deck_pc))
-                    }
+                    Icon(imageVector = RemotePcIcon, contentDescription = null, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.action_remote_pc), style = MaterialTheme.typography.titleMedium)
                 }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    FilledTonalButton(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = tonal,
-                        onClick = { onDesk(device.id) },
-                        modifier = Modifier.weight(1f).heightIn(min = 44.dp),
-                    ) {
-                        Icon(
-                            imageVector = DeskClockIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(R.string.action_desk_pc))
-                    }
-                    FilledTonalButton(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = tonal,
-                        onClick = { onWebcam(device.id) },
-                        modifier = Modifier.weight(1f).heightIn(min = 44.dp),
-                    ) {
-                        Icon(
-                            imageVector = CameraLensIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(R.string.action_webcam_pc))
-                    }
-                }
-
                 // 2. Files & Clipboard Bento Strip (Always visible, no hidden expander)
                 Text(
                     text = stringResource(R.string.home_section_transfer),
@@ -1850,126 +1781,202 @@ private fun PcCard(
                     }
                 }
 
-                // 3. Live PC media, master volume, mute, and active output device bar
-                val deckState = device.deckState
-                if (device.online) {
-                    PcAudioCardSection(
-                        pcId = device.id,
-                        pcName = device.name,
-                        deckState = deckState,
-                        ink = ink,
-                        onSetPcAudio = { vol, muted -> onSetPcAudio(device.id, vol, muted) },
-                        micAvailable = micOn || device.has("media.phone_mic"),
-                        micOn = micOn,
-                        onToggleMic = onToggleMic,
+                var showMoreTools by remember(device.id) { mutableStateOf(false) }
+                LaunchedEffect(soundOnPcNow, micOn, revealTools) {
+                    if (soundOnPcNow || micOn || revealTools) showMoreTools = true
+                }
+                OutlinedButton(
+                    onClick = { showMoreTools = !showMoreTools },
+                    colors = outlined,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(if (showMoreTools) R.string.barbary_less_tools else R.string.barbary_more_tools))
+                }
+                if (showMoreTools) {
+                    // 1. Primary Workspace Bento Grid (2x2): Control PC, Deck, Desk Mode, Webcam
+                    Text(
+                        text = stringResource(R.string.home_section_screen),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = sectionLabelColor,
+                        modifier = Modifier.padding(start = 2.dp),
                     )
-                    // The phone's sound on the PC, started from here (#398) and
-                    // brought back to the phone from the same button (#521).
-                    if (device.has("mirroring.sound_from_phone") || soundOnPcNow) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         FilledTonalButton(
                             contentPadding = CardButtonPadding,
+                            enabled = device.online,
                             colors = tonal,
-                            onClick = { if (soundOnPcNow) onStopSound() else onPhoneSoundOnPc(device.id) },
-                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { onDeck(device.id) },
+                            modifier = Modifier.weight(1f).heightIn(min = 46.dp),
                         ) {
-                            ButtonLabel(
-                                stringResource(
-                                    if (soundOnPcNow) R.string.action_phone_sound_back else R.string.action_phone_sound_on_pc,
-                                ),
+                            Icon(
+                                imageVector = DeckGridIcon,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
                             )
+                            Spacer(Modifier.width(6.dp))
+                            ButtonLabel(stringResource(R.string.action_deck_pc))
                         }
                     }
-                }
-
-                // 4. Utilities & Power Row (Voice Memo, Ring PC, Lock, Sleep)
-                Text(
-                    text = stringResource(R.string.home_section_system),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = sectionLabelColor,
-                    modifier = Modifier.padding(start = 2.dp, top = 2.dp),
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    FilledTonalButton(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = tonal,
-                        onClick = { onRecord(device.id) },
-                        modifier = Modifier.weight(1f),
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Icon(
-                            imageVector = MicIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(15.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(R.string.action_record_pc))
-                    }
-                    FilledTonalButton(
-                        contentPadding = CardButtonPadding,
-                        enabled = device.online,
-                        colors = tonal,
-                        onClick = { onRing(device.id, !ringing) },
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Icon(
-                            imageVector = BellIcon,
-                            contentDescription = null,
-                            modifier = Modifier.size(15.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        ButtonLabel(stringResource(if (ringing) R.string.action_stop_ringing else R.string.action_ring_pc))
-                    }
-                }
-                if (device.has("device.pc_actions")) {
-                    // Lock and Sleep, then Hibernate and Shut down where the PC offers them:
-                    // three to a row, or two and two (D372).
-                    var confirmShutdown by remember { mutableStateOf(false) }
-                    val actions = buildList<Pair<Int, () -> Unit>> {
-                        add(R.string.action_lock_pc to { onPower(device.id, false) })
-                        add(R.string.action_sleep_pc to { onPower(device.id, true) })
-                        if (device.has("device.pc_hibernate")) add(R.string.action_hibernate_pc to { onHibernate(device.id) })
-                        if (device.has("device.pc_shutdown")) add(R.string.action_shutdown_pc to { confirmShutdown = true })
-                    }
-                    actions.chunked(if (actions.size == 4) 2 else 3).forEach { row ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        FilledTonalButton(
+                            contentPadding = CardButtonPadding,
+                            enabled = device.online,
+                            colors = tonal,
+                            onClick = { onDesk(device.id) },
+                            modifier = Modifier.weight(1f).heightIn(min = 44.dp),
                         ) {
-                            row.forEach { (label, action) ->
-                                OutlinedButton(
-                                    contentPadding = CardButtonPadding,
-                                    enabled = device.online,
-                                    colors = outlined,
-                                    border = outline,
-                                    onClick = action,
-                                    modifier = Modifier.weight(1f),
-                                ) {
-                                    ButtonLabel(stringResource(label))
-                                }
+                            Icon(
+                                imageVector = DeskClockIcon,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            ButtonLabel(stringResource(R.string.action_desk_pc))
+                        }
+                        FilledTonalButton(
+                            contentPadding = CardButtonPadding,
+                            enabled = device.online,
+                            colors = tonal,
+                            onClick = { onWebcam(device.id) },
+                            modifier = Modifier.weight(1f).heightIn(min = 44.dp),
+                        ) {
+                            Icon(
+                                imageVector = CameraLensIcon,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            ButtonLabel(stringResource(R.string.action_webcam_pc))
+                        }
+                    }
+
+                    // 3. Live PC media, master volume, mute, and active output device bar
+                    val deckState = device.deckState
+                    if (device.online) {
+                        PcAudioCardSection(
+                            pcId = device.id,
+                            pcName = device.name,
+                            deckState = deckState,
+                            ink = ink,
+                            onSetPcAudio = { vol, muted -> onSetPcAudio(device.id, vol, muted) },
+                            micAvailable = micOn || device.has("media.phone_mic"),
+                            micOn = micOn,
+                            onToggleMic = onToggleMic,
+                        )
+                        // The phone's sound on the PC, started from here (#398) and
+                        // brought back to the phone from the same button (#521).
+                        if (device.has("mirroring.sound_from_phone") || soundOnPcNow) {
+                            FilledTonalButton(
+                                contentPadding = CardButtonPadding,
+                                colors = tonal,
+                                onClick = { if (soundOnPcNow) onStopSound() else onPhoneSoundOnPc(device.id) },
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                ButtonLabel(
+                                    stringResource(
+                                        if (soundOnPcNow) R.string.action_phone_sound_back else R.string.action_phone_sound_on_pc,
+                                    ),
+                                )
                             }
                         }
                     }
-                    if (confirmShutdown) {
-                        AlertDialog(
-                            onDismissRequest = { confirmShutdown = false },
-                            containerColor = glassModalContainerColor(),
-                            title = { Text(stringResource(R.string.shutdown_pc_title, device.name)) },
-                            text = { Text(stringResource(R.string.shutdown_pc_text)) },
-                            confirmButton = {
-                                TextButton(onClick = {
-                                    confirmShutdown = false
-                                    onShutdown(device.id)
-                                }) { Text(stringResource(R.string.action_shutdown_pc)) }
-                            },
-                            dismissButton = {
-                                TextButton(onClick = { confirmShutdown = false }) {
-                                    Text(stringResource(R.string.action_cancel))
+
+                    // 4. Utilities & Power Row (Voice Memo, Ring PC, Lock, Sleep)
+                    Text(
+                        text = stringResource(R.string.home_section_system),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = sectionLabelColor,
+                        modifier = Modifier.padding(start = 2.dp, top = 2.dp),
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        FilledTonalButton(
+                            contentPadding = CardButtonPadding,
+                            enabled = device.online,
+                            colors = tonal,
+                            onClick = { onRecord(device.id) },
+                            modifier = Modifier.weight(1f),
+                        ) {
+                            Icon(
+                                imageVector = MicIcon,
+                                contentDescription = null,
+                                modifier = Modifier.size(15.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            ButtonLabel(stringResource(R.string.action_record_pc))
+                        }
+                        FilledTonalButton(
+                            contentPadding = CardButtonPadding,
+                            enabled = device.online,
+                            colors = tonal,
+                            onClick = { onRing(device.id, !ringing) },
+                            modifier = Modifier.weight(1f),
+                        ) {
+                            Icon(
+                                imageVector = BellIcon,
+                                contentDescription = null,
+                                modifier = Modifier.size(15.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            ButtonLabel(stringResource(if (ringing) R.string.action_stop_ringing else R.string.action_ring_pc))
+                        }
+                    }
+                    if (device.has("device.pc_actions")) {
+                        // Lock and Sleep, then Hibernate and Shut down where the PC offers them:
+                        // three to a row, or two and two (D372).
+                        var confirmShutdown by remember { mutableStateOf(false) }
+                        val actions = buildList<Pair<Int, () -> Unit>> {
+                            add(R.string.action_lock_pc to { onPower(device.id, false) })
+                            add(R.string.action_sleep_pc to { onPower(device.id, true) })
+                            if (device.has("device.pc_hibernate")) add(R.string.action_hibernate_pc to { onHibernate(device.id) })
+                            if (device.has("device.pc_shutdown")) add(R.string.action_shutdown_pc to { confirmShutdown = true })
+                        }
+                        actions.chunked(if (actions.size == 4) 2 else 3).forEach { row ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                row.forEach { (label, action) ->
+                                    OutlinedButton(
+                                        contentPadding = CardButtonPadding,
+                                        enabled = device.online,
+                                        colors = outlined,
+                                        border = outline,
+                                        onClick = action,
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        ButtonLabel(stringResource(label))
+                                    }
                                 }
-                            },
-                        )
+                            }
+                        }
+                        if (confirmShutdown) {
+                            AlertDialog(
+                                onDismissRequest = { confirmShutdown = false },
+                                containerColor = glassModalContainerColor(),
+                                title = { Text(stringResource(R.string.shutdown_pc_title, device.name)) },
+                                text = { Text(stringResource(R.string.shutdown_pc_text)) },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        confirmShutdown = false
+                                        onShutdown(device.id)
+                                    }) { Text(stringResource(R.string.action_shutdown_pc)) }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = { confirmShutdown = false }) {
+                                        Text(stringResource(R.string.action_cancel))
+                                    }
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -4124,9 +4131,9 @@ private fun ButtonLabel(text: String) {
     val size = LocalTextStyle.current.fontSize.takeIf { it.isSpecified } ?: 14.sp
     Text(
         text,
-        maxLines = 1,
+        maxLines = 2,
         overflow = TextOverflow.Ellipsis,
-        autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = size, stepSize = 0.5.sp),
+        autoSize = TextAutoSize.StepBased(minFontSize = 12.sp, maxFontSize = size, stepSize = 0.5.sp),
     )
 }
 

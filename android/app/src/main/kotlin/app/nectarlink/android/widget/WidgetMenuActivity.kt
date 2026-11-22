@@ -59,6 +59,10 @@ import com.eslamelbarbary.wasla.android.ui.theme.NectarlinkTheme
  * names them, or the list of PCs to pick the one a widget shows.
  */
 class WidgetMenuActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val core = (application as NectarlinkApplication).core

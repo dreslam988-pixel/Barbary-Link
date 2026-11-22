@@ -205,6 +205,10 @@ internal class EnrollmentComparison : ViewModel() {
 
 /** Shows the biometric prompt for one [UnlockPrompts] request, then closes. */
 class UnlockPromptActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     companion object {
         const val EXTRA_ID = "unlock_request"
     }

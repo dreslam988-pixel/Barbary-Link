@@ -6,6 +6,7 @@
   translated (on Weblate, say) stays out until it's done. LocalesTest checks both.
 -->
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="ar" />
     <locale android:name="en" />
     <locale android:name="de" />
     <locale android:name="ja" />

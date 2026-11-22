@@ -7,7 +7,7 @@ plugins {
 }
 
 // The version comes from the workspace (Cargo.toml), like the PC app's.
-val appVersion: String = "1.0.0"
+val appVersion: String = "1.1.0"
 /**
  * Every build must have a larger code than the last one it updates. 1.2.3 → 10203999,
  * and its nightlies 1.2.3-nightly.N → 10203000 + N, between the release before and

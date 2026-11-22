@@ -17,6 +17,10 @@ import com.eslamelbarbary.wasla.android.service.ConnectionService
  */
 @RequiresApi(Build.VERSION_CODES.S)
 class PcCompanionService : CompanionDeviceService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
 
     @Deprecated("Deprecated in API 36 in favor of onDevicePresenceEvent")
     @Suppress("DEPRECATION")

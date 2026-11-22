@@ -44,6 +44,10 @@ import kotlinx.coroutines.launch
  * lock that local discovery needs on Android.
  */
 class ConnectionService : LifecycleService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private var multicastLock: WifiManager.MulticastLock? = null
     private var screenReceiver: BroadcastReceiver? = null
     /** False when [registerScreenWake] did not stick. The poll must not idle for 15s with no wake. */

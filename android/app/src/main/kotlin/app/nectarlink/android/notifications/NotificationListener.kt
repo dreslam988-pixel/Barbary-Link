@@ -22,6 +22,10 @@ import com.eslamelbarbary.wasla.android.NectarlinkApplication
  * it (and keeps the process alive) for as long as that lasts.
  */
 class NotificationListener : NotificationListenerService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val core get() = (application as NectarlinkApplication).core
     private val reader by lazy { NotificationReader(this) }
     private val limiter = LiveRateLimiter { notification -> core.notificationPosted(notification) }

@@ -63,6 +63,10 @@ data class RecorderSession(
  * switches apps, and sends the finished recording to the chosen PC on stop.
  */
 class RecorderService : Service() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var encodeJob: Job? = null
 

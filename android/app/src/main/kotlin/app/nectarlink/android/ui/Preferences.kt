@@ -16,6 +16,20 @@ import kotlinx.coroutines.flow.asStateFlow
 @androidx.compose.runtime.Stable
 class Preferences(context: Context) {
     private val prefs = context.applicationContext.getSharedPreferences("appearance", Context.MODE_PRIVATE)
+    init {
+        if (!prefs.getBoolean("barbary_simple_ui_v11", false)) {
+            prefs.edit {
+                putString("theme", "graphite")
+                putString("mode", "dark")
+                putBoolean(DYNAMIC, false)
+                putBoolean("comb_motion", false)
+                // Start on the short linking instructions, not a five-stage wizard.
+                // The full walkthrough remains available from Settings > About.
+                putBoolean(WALKTHROUGH_COMPLETED, true)
+                putBoolean("barbary_simple_ui_v11", true)
+            }
+        }
+    }
     private val _appearance = MutableStateFlow(load())
     val appearance: StateFlow<Appearance> = _appearance.asStateFlow()
 

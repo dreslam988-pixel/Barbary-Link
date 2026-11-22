@@ -8,6 +8,10 @@ import android.service.quicksettings.TileService
 
 /** The "Send clipboard" Quick Settings tile. */
 class ClipboardTileService : TileService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     @SuppressLint("StartActivityAndCollapseDeprecated") // The Intent overload is the only one before Android 14.
     override fun onClick() {
         super.onClick()

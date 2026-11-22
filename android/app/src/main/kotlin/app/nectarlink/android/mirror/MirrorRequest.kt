@@ -129,6 +129,10 @@ object MirrorRequests {
  * for (once; without it, the screen is shared alone).
  */
 class MirrorConsentActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private var request: MirrorRequest? = null
 
     private val sound = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->

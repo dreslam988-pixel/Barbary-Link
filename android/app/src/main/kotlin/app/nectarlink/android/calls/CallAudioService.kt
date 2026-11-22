@@ -37,6 +37,10 @@ import kotlinx.coroutines.launch
  * button gives it back. Ends with the call, when the PC stops, or on that tap.
  */
 class CallAudioService : Service() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onBind(intent: Intent?): IBinder? = null

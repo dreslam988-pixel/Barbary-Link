@@ -9,7 +9,7 @@ concurrency:
 jobs:
   android-ui:
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    timeout-minutes: 100
     env:
       CARGO_BUILD_JOBS: '2'
     steps:
@@ -38,7 +38,7 @@ jobs:
           rustup target add x86_64-linux-android
           cargo install cargo-ndk --locked
           chmod +x gradlew
-          ./gradlew :app:assembleRelease :app:validateSigningDebug -Pnectarlink.abis=x86_64 '-Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8' --no-daemon --console=plain
+          ./gradlew :app:assembleRelease :app:assembleDebug :app:validateSigningDebug -Pnectarlink.abis=x86_64 '-Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8' --no-daemon --console=plain
       - name: Apply disposable CI test signature
         shell: bash
         run: |
@@ -51,6 +51,17 @@ jobs:
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
         with:
           api-level: 35
+          target: default
+          arch: x86_64
+          disable-animations: true
+          emulator-boot-timeout: 240
+          script: python3 scripts/android-ui-smoke.py
+      - name: Run Arabic legacy-locale UI test on Android API 30
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        env:
+          UI_EXPECTED_API: '30'
+        with:
+          api-level: 30
           target: default
           arch: x86_64
           disable-animations: true

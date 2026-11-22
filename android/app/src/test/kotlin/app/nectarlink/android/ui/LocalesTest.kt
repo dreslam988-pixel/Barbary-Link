@@ -54,6 +54,9 @@ class LocalesTest {
     @Test
     fun `the app's language picker offers exactly the languages Android is told about`() {
         assertEquals(offered(), AppLanguage.languages.map { it.first })
+        assertEquals("ar", AppLanguage.normalize("ar"))
+        assertEquals("ar", AppLanguage.normalize("ar-EG"))
+        assertEquals("ar", AppLanguage.normalize("ar-SA"))
         assertEquals("de", AppLanguage.normalize("de"))
         assertEquals("de", AppLanguage.normalize("de-DE"))
         assertEquals("de", AppLanguage.normalize("de-AT"))
@@ -85,4 +88,23 @@ class LocalesTest {
             assertTrue("$tag is offered but misses plurals: $missingPlurals", missingPlurals.isEmpty())
         }
     }
+    @Test
+    fun `Arabic plurals have every quantity category and pairing hint keeps its button name`() {
+        val file = File(res, "values-ar/strings.xml")
+        val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
+        val nodes = doc.getElementsByTagName("plurals")
+        val quantities = setOf("zero", "one", "two", "few", "many", "other")
+        assertEquals(8, nodes.length)
+        for (i in 0 until nodes.length) {
+            val group = nodes.item(i) as Element
+            val items = group.getElementsByTagName("item")
+            val actual = (0 until items.length).map { (items.item(it) as Element).getAttribute("quantity") }.toSet()
+            assertEquals(group.getAttribute("name"), quantities, actual)
+        }
+        val (strings, _) = names(file)
+        assertTrue(strings.getValue("elevated_pair_collapsed").contains(strings.getValue("elevated_pair_action")))
+        assertTrue(strings.getValue("home_no_pc_body").contains("1."))
+        assertTrue(strings.getValue("home_no_pc_body").contains("3."))
+    }
+
 }

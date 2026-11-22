@@ -77,6 +77,10 @@ object MicRequests {
 
 /** Starts the microphone for a PC after the user tapped its request; shows nothing itself. */
 class MicStartActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private var pcId: String? = null
 
     private val permission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->

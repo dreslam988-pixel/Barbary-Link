@@ -21,6 +21,10 @@ import app.nectarlink.core.CallControls
  * MANAGE_ONGOING_CALLS (Android 12+), an app-op Elevated's shell grants.
  */
 class CallCompanion : InCallService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     /**
      * The call being controlled: the active one, else the held one, else the
      * latest. A second call waiting to be answered doesn't take over the one

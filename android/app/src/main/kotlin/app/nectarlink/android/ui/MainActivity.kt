@@ -104,6 +104,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     @Volatile
     private var activeRemotePcId: String? = null
     private var requestedRemotePc by mutableStateOf<String?>(null)

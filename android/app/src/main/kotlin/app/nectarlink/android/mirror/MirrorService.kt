@@ -51,6 +51,10 @@ data class MirrorSession(
  * notification and a Stop button) and runs the encoder.
  */
 class MirrorService : Service() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val main = Handler(Looper.getMainLooper())
     private var projection: MediaProjection? = null

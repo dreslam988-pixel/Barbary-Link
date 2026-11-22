@@ -33,6 +33,10 @@ import kotlinx.coroutines.launch
 
 /** The find-device alarm controls, shown once the device is unlocked. */
 class RingActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val core = (application as NectarlinkApplication).core

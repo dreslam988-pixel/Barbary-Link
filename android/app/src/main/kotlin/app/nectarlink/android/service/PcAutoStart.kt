@@ -104,6 +104,10 @@ object PcAutoStart {
  * any other way it closes and does nothing.
  */
 class PcStartActivity : Activity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private var started = false
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {

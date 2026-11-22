@@ -69,6 +69,10 @@ internal fun resolutionOf(width: Int, height: Int): Int {
  * screen.
  */
 class WebcamService : LifecycleService() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val main = Handler(Looper.getMainLooper())
     private var encoder: CameraEncoder? = null
     private var pcId: String? = null

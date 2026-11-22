@@ -17,6 +17,10 @@ import androidx.core.graphics.drawable.toBitmap
  * NectarLink could notice them in front.
  */
 class OpenWithPauseActivity : Activity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val pkg = intent.getStringExtra(EXTRA_PACKAGE)

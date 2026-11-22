@@ -13,8 +13,27 @@ import androidx.annotation.RequiresApi
  * notifications and background services included. Older Android follows the phone.
  */
 object AppLanguage {
+    /** Arabic is the fork's default, including Android 8-12 without per-app locales. */
+    fun arabicContext(context: Context): Context {
+        if (Build.VERSION.SDK_INT >= 33) return context
+        val configuration = android.content.res.Configuration(context.resources.configuration)
+        val locale = java.util.Locale.forLanguageTag("ar")
+        configuration.setLocale(locale)
+        configuration.setLayoutDirection(locale)
+        return context.createConfigurationContext(configuration)
+    }
+
+    fun initializeDefault(context: Context) {
+        val prefs = context.getSharedPreferences("barbary_language", Context.MODE_PRIVATE)
+        if (Build.VERSION.SDK_INT >= 33 && !prefs.getBoolean("arabic_default_v11", false)) {
+            context.getSystemService(LocaleManager::class.java)?.applicationLocales = LocaleList.forLanguageTags("ar")
+            prefs.edit().putBoolean("arabic_default_v11", true).apply()
+        }
+    }
+
     /** The languages the app speaks, as BCP 47 tags, each named in its own language. */
     val languages: List<Pair<String, String>> = listOf(
+        "ar" to "العربية",
         "en" to "English",
         "de" to "Deutsch",
         "ja" to "日本語",
@@ -53,6 +72,7 @@ object AppLanguage {
         languages.firstOrNull { it.first.equals(tag, ignoreCase = true) }?.let { return it.first }
         val lower = tag.lowercase()
         return when {
+            lower == "ar" || lower.startsWith("ar-") -> "ar"
             lower.startsWith("zh") && ("hans" in lower || "-cn" in lower || "-sg" in lower) -> "zh-CN"
             lower == "de" || lower.startsWith("de-") -> "de"
             lower == "en" || lower.startsWith("en-") -> "en"

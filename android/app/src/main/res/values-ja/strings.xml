@@ -1622,6 +1622,8 @@
     <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
     <string name="community_invite_join">فتح تليجرام</string>
     <string name="community_invite_later">今はしない</string>
+    <string name="barbary_more_tools">More tools</string>
+    <string name="barbary_less_tools">Hide extra tools</string>
 </resources>
 
 

@@ -32,6 +32,10 @@ import kotlinx.coroutines.launch
  * picks one first. File progress and the confirmation are notifications.
  */
 class SendActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(newBase))
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var sent = false
     private val pickFilesLauncher = registerForActivityResult(

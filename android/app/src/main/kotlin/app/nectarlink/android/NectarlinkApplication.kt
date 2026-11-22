@@ -23,6 +23,10 @@ import kotlinx.coroutines.launch
 
 /** Starts the core with the process and keeps it for the app's lifetime. */
 class NectarlinkApplication : Application(), DefaultLifecycleObserver {
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(com.eslamelbarbary.wasla.android.ui.AppLanguage.arabicContext(base))
+    }
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val core: Core by lazy { Core(this, scope) }
@@ -48,6 +52,7 @@ class NectarlinkApplication : Application(), DefaultLifecycleObserver {
 
     override fun onCreate() {
         super<Application>.onCreate()
+        com.eslamelbarbary.wasla.android.ui.AppLanguage.initializeDefault(this)
         // First, so a crash anywhere after is kept.
         com.eslamelbarbary.wasla.android.diag.Crashes.install(this)
         // Before the core starts: its network code reads the phone's DNS servers.
