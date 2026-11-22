@@ -33,60 +33,6 @@ $repo = Split-Path -Parent $PSScriptRoot
 if (-not $Exe) { $Exe = Join-Path $repo 'target\package\BarbaryLink\barbary-link.exe' }
 if (-not (Test-Path $Exe)) { throw "$Exe not found; run scripts\package.ps1 -StageOnly first, or pass -Exe" }
 
-# Capture outside Qt: the existing pre-application Qt timer cannot reliably
-# run before QGuiApplication has created its event dispatcher.
-Add-Type -AssemblyName System.Drawing
-Add-Type -TypeDefinition @'
-using System;
-using System.Runtime.InteropServices;
-public static class BarbaryWindowCapture {
-    [StructLayout(LayoutKind.Sequential)] public struct Rect { public int Left, Top, Right, Bottom; }
-    private delegate bool EnumProc(IntPtr hwnd, IntPtr data);
-    [DllImport("user32.dll")] private static extern bool EnumWindows(EnumProc fn, IntPtr data);
-    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint pid);
-    [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr hwnd);
-    [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hwnd, out Rect rect);
-    [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr hwnd, IntPtr dc, uint flags);
-    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hwnd);
-    public static IntPtr Find(int pid) {
-        IntPtr found = IntPtr.Zero;
-        EnumWindows((hwnd, data) => {
-            uint owner; Rect r; GetWindowThreadProcessId(hwnd, out owner);
-            if (owner == pid && IsWindowVisible(hwnd) && GetWindowRect(hwnd, out r) && r.Right-r.Left > 500 && r.Bottom-r.Top > 200) {
-                found = hwnd; return false;
-            }
-            return true;
-        }, IntPtr.Zero);
-        return found;
-    }
-}
-'@
-function Save-BarbaryWindow([int]$ProcessId, [string]$Path, [string]$DesktopPath) {
-    $window = [BarbaryWindowCapture]::Find($ProcessId)
-    if ($window -eq [IntPtr]::Zero) { return $false }
-    $null = [BarbaryWindowCapture]::SetForegroundWindow($window)
-    $rect = New-Object BarbaryWindowCapture+Rect
-    if (-not [BarbaryWindowCapture]::GetWindowRect($window, [ref]$rect)) { return $false }
-    $width = $rect.Right - $rect.Left
-    $height = $rect.Bottom - $rect.Top
-    foreach ($method in @('print', 'screen')) {
-        $image = [System.Drawing.Bitmap]::new($width, $height, [System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
-        $graphics = [System.Drawing.Graphics]::FromImage($image)
-        try {
-            if ($method -eq 'print') {
-                $dc = $graphics.GetHdc()
-                try { $null = [BarbaryWindowCapture]::PrintWindow($window, $dc, 2) }
-                finally { $graphics.ReleaseHdc($dc) }
-                $image.Save($Path, [System.Drawing.Imaging.ImageFormat]::Png)
-            } else {
-                $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, [System.Drawing.Size]::new($width,$height))
-                $image.Save($DesktopPath, [System.Drawing.Imaging.ImageFormat]::Png)
-            }
-        } finally { $graphics.Dispose(); $image.Dispose() }
-    }
-    return $true
-}
-
 foreach ($pass in @('walkthrough', 'home')) {
     Write-Host "UI check: $pass"
     $data = Join-Path $repo "target\ui-check\$pass"
@@ -103,13 +49,13 @@ foreach ($pass in @('walkthrough', 'home')) {
         -RedirectStandardError $stderr -PassThru -NoNewWindow
     # Without the handle, ExitCode stays empty after the process exits.
     $null = $app.Handle
-    Start-Sleep -Milliseconds 3500
-    $captured = Save-BarbaryWindow -ProcessId $app.Id -Path (Join-Path $data 'screenshot.png') -DesktopPath (Join-Path $data 'desktop-capture.png')
-    if (-not $captured) { throw "No visible application window was available for $pass" }
     if (-not $app.WaitForExit(120000)) {
         $app.Kill()
         throw "the app didn't quit within 2 minutes"
     }
     Get-Content $stderr | Write-Host
     if ($app.ExitCode -ne 0) { throw "UI check ($pass) failed (exit code $($app.ExitCode))" }
+    $preview = Join-Path $data 'screenshot.png'
+    if (-not (Test-Path $preview)) { throw "UI check ($pass) produced no screenshot" }
+    if ((Get-Item $preview).Length -lt 1000) { throw "UI check ($pass) screenshot is empty" }
 }

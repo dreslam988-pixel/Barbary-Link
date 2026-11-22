@@ -6,6 +6,8 @@ This does not test a physical phone, a Windows connection, or the owner's
 release signature. The CI APK is deliberately not a distributed artifact.
 """
 import json
+import hashlib
+import zipfile
 from pathlib import Path
 import re
 import subprocess
@@ -51,18 +53,21 @@ result = {'package': PACKAGE, 'requested_api': 35, 'test_abi': 'x86_64',
           'release_optimized': True, 'signature': 'Disposable Android CI debug certificate',
           'physical_phone_tested': False, 'windows_pairing_tested': False}
 try:
+    with zipfile.ZipFile('target/android-ui-test.apk') as apk:
+        result['dex_sha256'] = {name: hashlib.sha256(apk.read(name)).hexdigest() for name in apk.namelist() if re.fullmatch(r'classes\d*\.dex', name)}
     result['android_api'] = int(adb('shell', 'getprop', 'ro.build.version.sdk').stdout.strip())
     result['android_release'] = adb('shell', 'getprop', 'ro.build.version.release').stdout.decode().strip()
     if result['android_api'] != 35:
         raise RuntimeError('The emulator API does not match the selected test target.')
     adb('install', '-r', 'target/android-ui-test.apk')
+    adb('shell', 'pm', 'grant', PACKAGE, 'android.permission.POST_NOTIFICATIONS')
     adb('logcat', '-c')
     adb('shell', 'monkey', '-p', PACKAGE, '-c', 'android.intent.category.LAUNCHER', '1')
     time.sleep(12)
     tree = capture('launch')
     if not adb('shell', 'pidof', PACKAGE, check=False).stdout.strip():
         raise RuntimeError('The app process did not survive first launch.')
-    if tap_label(tree, {'Skip', 'Get started', 'Continue'}):
+    if tap_label(tree, {'Skip setup', 'Skip', 'تخطي الإعداد'}):
         tree = capture('after-welcome')
     result['settings_opened'] = tap_label(tree, {'Settings', 'الإعدادات'})
     if result['settings_opened']:

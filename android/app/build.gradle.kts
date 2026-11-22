@@ -93,6 +93,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testOptions { unitTests.isIncludeAndroidResources = true }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -182,6 +184,9 @@ abstract class BundleFonts : DefaultTask() {
 val workspaceDir: Directory = rootProject.layout.projectDirectory.dir("..")
 
 androidComponents {
+    beforeVariants(selector().withBuildType("release")) { builder ->
+        builder.hostTests[com.android.build.api.variant.HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
+    }
     onVariants { variant ->
         val suffix = variant.name.replaceFirstChar(Char::uppercase)
         val cargo = tasks.register<CargoNdkBuild>("cargoNdkBuild$suffix") {

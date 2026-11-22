@@ -29,6 +29,7 @@ pub mod ffi {
         /// Like `prepare_qt`, for `--ui-check`: Qt's messages go to stderr
         /// instead of the log file, and QML warnings and errors are counted.
         fn prepare_qt_for_ui_check();
+        fn schedule_ui_check_screenshot();
 
         /// Draws the app at `percent` of its normal size. Before the app object is
         /// made. `QT_SCALE_FACTOR` set by hand wins.

@@ -1,22 +1,13 @@
-# The NectarLink mark
+# Barbary Link artwork
 
-The Waggle Dance: two loops, the phone and the PC, around a drop of nectar,
-tilted like the run of a honeybee's waggle dance, which is how bees tell each
-other where to find nectar.
+The phone-and-monitor artwork identifies this independent fork. It is not the
+NectarLink logo and does not imply endorsement by the upstream project.
 
-| File | What it is |
-|---|---|
-| `icon.svg` | The full-color app icon: espresso tile, warm glow, honey rim |
-| `icon-flat.svg` | The same without the glow and highlights, for flat contexts |
-| `icon-mono.svg` | The mark alone in white, for one-color uses (notifications, themed icons) |
-| `icon-512.png` | `icon.svg` at 512 × 512 |
+- `icon.svg`, `icon-flat.svg`, and `icon-512.png`: the full-color fork icon.
+- `icon-mono.svg`: the white glyph for single-color uses.
+- The corresponding native render is in `desktop/app/src/mark.rs`.
+- The small navigation glyph is `Icons.mark` in the desktop QML module.
+- Android uses its own launcher and notification vector resources.
 
-The apps draw the mark themselves from the same geometry:
-`desktop/app/src/mark.rs` (the Windows icon, tray and notifications at every
-size) and `android/app/src/main/res/drawable/ic_launcher_*.xml` and
-`ic_notification.xml`.
-
-Colors (Honey palette, `docs/design/tokens.json`): tile `#2C1600`, glow
-`#693C00`, phone loop `#FFF8F3`, PC loop `#FFDDB8`, nectar and rim `#FFB95F`.
-
-The name and the mark are covered by the [trademark policy](../../TRADEMARKS.md).
+The artwork is provided with this fork under GPL-3.0-or-later. The original
+project's notices and trademark policy are preserved elsewhere in the source.

@@ -973,6 +973,7 @@ fn main() -> ExitCode {
     }
 
     if options.ui_check {
+        bridge::native::ffi::schedule_ui_check_screenshot();
         std::thread::spawn(|| {
             std::thread::sleep(Duration::from_secs(UI_CHECK_SECONDS));
             bridge::app::request_quit();

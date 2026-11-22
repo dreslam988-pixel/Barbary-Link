@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "app_helpers.h"
 #include "video_view.h"
+#include <initializer_list>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -181,18 +182,27 @@ void set_ui_scale(int32_t percent)
 void prepare_qt_for_ui_check()
 {
     qInstallMessageHandler(uiCheckMessageHandler);
-    QTimer::singleShot(6000, [] {
-        const auto path = qEnvironmentVariable("BARBARY_UI_SCREENSHOT");
-        if (path.isEmpty()) return;
-        for (auto *window : QGuiApplication::allWindows()) {
-            auto *quick = qobject_cast<QQuickWindow *>(window);
-            if (quick && quick->isVisible() && quick->width() > 500) {
-                quick->grabWindow().save(path);
-                break;
-            }
-        }
-    });
     prepare_qt_without_log();
+}
+
+void schedule_ui_check_screenshot()
+{
+    const auto path = qEnvironmentVariable("BARBARY_UI_SCREENSHOT");
+    if (path.isEmpty()) return;
+    // QGuiApplication and the QML engine exist here. Repeated shots let
+    // layout and theme changes settle while keeping the final visible frame.
+    for (const int delay : {1000, 2500, 4500, 6500}) {
+        QTimer::singleShot(delay, QGuiApplication::instance(), [path] {
+            for (auto *window : QGuiApplication::allWindows()) {
+                auto *quick = qobject_cast<QQuickWindow *>(window);
+                if (quick && quick->isVisible() && quick->width() > 500) {
+                    const auto image = quick->grabWindow();
+                    if (!image.isNull()) image.save(path);
+                    break;
+                }
+            }
+        });
+    }
 }
 
 int32_t qml_problem_count()
