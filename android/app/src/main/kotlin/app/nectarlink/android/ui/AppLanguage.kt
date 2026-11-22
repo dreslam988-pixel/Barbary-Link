@@ -10,23 +10,34 @@ import androidx.annotation.RequiresApi
 /**
  * The app's own language, kept by Android (13 and newer) as the per-app language: it shows
  * in the system's App languages screen too, and applies everywhere the app shows text,
- * notifications and background services included. Older Android follows the phone.
+ * notifications and background services included. Older Android uses the Arabic default.
  */
 object AppLanguage {
-    /** Arabic is the fork's default, including Android 8-12 without per-app locales. */
+    /** Apply the chosen language before any Activity or Service reads its resources.
+     * LocaleManager alone can leave the very first Activity in the system language.
+     */
     fun arabicContext(context: Context): Context {
-        if (Build.VERSION.SDK_INT >= 33) return context
+        val prefs = context.getSharedPreferences("barbary_language", Context.MODE_PRIVATE)
+        val choice = prefs.getString("choice", "ar") ?: "ar"
+        val systemLocales = if (Build.VERSION.SDK_INT >= 33) {
+            context.getSystemService(LocaleManager::class.java)?.applicationLocales
+        } else null
+        val locales = when {
+            systemLocales != null && !systemLocales.isEmpty -> systemLocales
+            choice.isEmpty() -> return context
+            else -> LocaleList.forLanguageTags(choice)
+        }
         val configuration = android.content.res.Configuration(context.resources.configuration)
-        val locale = java.util.Locale.forLanguageTag("ar")
-        configuration.setLocale(locale)
-        configuration.setLayoutDirection(locale)
+        configuration.setLocales(locales)
+        configuration.setLayoutDirection(locales[0])
         return context.createConfigurationContext(configuration)
     }
 
     fun initializeDefault(context: Context) {
         val prefs = context.getSharedPreferences("barbary_language", Context.MODE_PRIVATE)
         if (Build.VERSION.SDK_INT >= 33 && !prefs.getBoolean("arabic_default_v11", false)) {
-            context.getSystemService(LocaleManager::class.java)?.applicationLocales = LocaleList.forLanguageTags("ar")
+            val manager = context.getSystemService(LocaleManager::class.java) ?: return
+            manager.applicationLocales = LocaleList.forLanguageTags("ar")
             prefs.edit().putBoolean("arabic_default_v11", true).apply()
         }
     }
@@ -61,6 +72,7 @@ object AppLanguage {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun set(context: Context, tag: String) {
         val manager = context.getSystemService(LocaleManager::class.java) ?: return
+        context.getSharedPreferences("barbary_language", Context.MODE_PRIVATE).edit().putString("choice", tag).apply()
         manager.applicationLocales = if (tag.isEmpty()) LocaleList.getEmptyLocaleList() else LocaleList.forLanguageTags(tag)
     }
 
