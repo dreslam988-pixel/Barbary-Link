@@ -40,6 +40,10 @@ foreach ($pass in @('walkthrough', 'home')) {
     New-Item -ItemType Directory -Force $data | Out-Null
     if ($pass -eq 'home') {
         [System.IO.File]::WriteAllText((Join-Path $data 'desktop-settings.json'), '{ "walkthroughCompleted": true }')
+    } else {
+        # The synthetic paired phone otherwise activates the legacy-user shortcut
+        # and completes step zero before the walkthrough can be captured.
+        [System.IO.File]::WriteAllText((Join-Path $data 'desktop-settings.json'), '{ "walkthroughCompleted": false, "walkthroughStep": 1 }')
     }
     $stderr = Join-Path $data 'stderr.txt'
 

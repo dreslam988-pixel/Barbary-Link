@@ -419,6 +419,7 @@ mod tests {
             signature(&["exception", "app.nectarlink.android.Foo.bar", "java.lang.IllegalStateException"]),
             "b3af6c6e31db"
         );
+        assert_eq!(signature(&["exception", "com.eslamelbarbary.wasla.android.Foo.bar", "java.lang.IllegalStateException"]), "bf0aaea7068b");
     }
 
     #[test]

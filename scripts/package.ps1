@@ -287,7 +287,7 @@ if (-not $makensis) { $makensis = Join-Path ${env:ProgramFiles(x86)} 'NSIS\maken
 if (-not (Test-Path $makensis)) { throw "NSIS (makensis) not found" }
 $out = Join-Path $package "BarbaryLink-$version-$Arch-setup.exe"
 Invoke-Native "makensis" {
-    & $makensis /V2 "/DVERSION=$numeric" "/DBUILD=$build" "/DDISPLAY_VERSION=$version" "/DARCH=$Arch" "/DSTAGE=$stage" `
+    & $makensis /INPUTCHARSET UTF8 /V2 "/DVERSION=$numeric" "/DBUILD=$build" "/DDISPLAY_VERSION=$version" "/DARCH=$Arch" "/DSTAGE=$stage" `
         "/DICON=$($icon.FullName)" "/DOUTFILE=$out" (Join-Path $root 'desktop\installer\nectarlink.nsi')
 }
 Write-Host ("Installer: {0} ({1:N1} MB)" -f $out, ((Get-Item $out).Length / 1MB))

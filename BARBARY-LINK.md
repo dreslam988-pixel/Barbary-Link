@@ -1,48 +1,51 @@
-# Barbary Link 1.0.0 (Android)
+# Barbary Link 1.0.0: build notes
 
-Independent modification for Eslam Elbarbary, based on NectarLink commit 3eff9a0.
+Independent modification for Eslam Elbarbary, based on NectarLink commit `3eff9a0`.
 Original project: https://github.com/thtbee/nectarlink
 
-Android package: com.eslamelbarbary.wasla
-Android source namespace: com.eslamelbarbary.wasla.android
-Upstream wire protocol identifiers are retained for compatibility.
+Android ID: `com.eslamelbarbary.wasla`
+Android source namespace: `com.eslamelbarbary.wasla.android`
+Upstream wire protocol and UniFFI identifiers are retained for compatibility. The optional privileged helper retains its stable Binder API namespace, `app.nectarlink.services`.
 
-Changes: independent app name, package, original icon, owner credit and owner social links.
-The app UI remains primarily in the upstream languages. This is not a complete Arabic translation.
-Automatic installation of original-project updates is disabled in this fork. Update it manually with a same-key Barbary Link release.
-Upstream licenses and copyright notices are retained in LICENSE and LICENSES.
-The Android and desktop applications remain GPL-3.0-or-later; core licenses remain unchanged.
+## Toolchain
 
-Windows compilation and UI checks are tracked separately from Android. See the supplied build/test report for actual results.
-Do not publish a Windows build until the installer identity, update tasks, download targets and complete runtime behavior have been reviewed on Windows.
-Android-to-PC pairing requires device testing and is not established by a successful compilation.
+- JDK 21
+- Android SDK platform 37.0, build tools 37.0.0
+- Android NDK 30.0.16248370
+- Rust 1.100.0, cargo-ndk, ARM64 and ARMv7 Android targets
+- Windows: Qt 6.12.0, MSVC 2022 x64 kit, NSIS 3
 
-No signing keys or passwords belong in this source archive.
+Set `JAVA_HOME` and `ANDROID_HOME`. Follow the pinned versions and dependencies in the manual GitHub Actions workflows and lockfiles.
 
-## Build notes
+## Android
 
-Use JDK 21, Android SDK platform 37.0, NDK 30.0.16248370 and Rust 1.100.0 with the aarch64-linux-android target and cargo-ndk. Set ANDROID_HOME and JAVA_HOME.
+From `android/`:
 
-From android/: `./gradlew :app:assembleDebug -Pnectarlink.abis=arm64-v8a`
-For release artifacts: `./gradlew :app:assembleRelease :app:bundleRelease -Pnectarlink.abis=arm64-v8a`
-Release signing is not configured in source. Without NECTARLINK_KEYSTORE and NECTARLINK_KEYSTORE_PASSWORD, the release output is unsigned. The key alias is nectarlink. Keep credentials out of source and CI logs.
+```sh
+./gradlew :app:assembleRelease :app:bundleRelease -Pnectarlink.abis=arm64-v8a,armeabi-v7a
+./gradlew :app:testReleaseUnitTest -Pnectarlink.abis=arm64-v8a,armeabi-v7a
+```
 
-The FFI source is generated through tools/barbary-bindgen, pinned to UniFFI 0.32.2, and compiled in android/corebindings to reduce peak compilation memory. Its package remains app.nectarlink.core; only Android application code was moved to the new namespace.
+Release outputs are unsigned without local signing credentials. The delivery APK and AAB are signed separately with the same private Android key. The key alias is `nectarlink`; this internal alias is not the installed app name. Keys and passwords are intentionally absent from source and CI.
 
-The production Android Rust optimization profile is retained. Performance still needs measurement on real devices.
+The FFI source is generated through `tools/barbary-bindgen`, pinned to UniFFI 0.32.2, and compiled in `android/corebindings`. Its namespace remains `app.nectarlink.core`.
 
-No APK, AAB, unit-test suite or live Android UI has yet passed verification. Do not describe source compilation of individual components as successful application testing.
+The ARM release APK and the emulator test APK had identical optimized `classes.dex` bytes. The emulator used an x86_64 native core and a disposable test certificate, so this does not prove ARM native runtime behavior on a physical phone.
 
-Upstream GitHub workflows have the .disabled suffix in this handoff so that uploading the source does not automatically launch builds or publishing jobs. Review and authorize any replacement workflow before enabling it.
+## Windows
 
-## Remote build route
+Use the manual Windows workflow or `scripts/package.ps1`. Build and stage with `-StageOnly`. Put the separately signed Android APK in the final stage as `Barbary-Link.apk` before assembling the final NSIS installer. This supports the app's phone-install feature without fetching an original-project APK.
 
-The production Rust optimization profile has been restored for GitHub-hosted standard runners. Desktop brand, native icon, installer identity and optional component CLSIDs are now distinct. Windows installers must include the separately signed Barbary-Link.apk beside the desktop executable. Original-project auto-updates and APK downloads are not used.
+Native builds, fork update isolation, visible Home screenshots and a preflight install/launch/uninstall test passed in the referenced run. The final installer is assembled afterward with the signed APK and owner publisher metadata. It must not be described as the exact installer executed by that preflight test.
 
-The manual Barbary Link build workflow compiles Android unsigned release artifacts and runs unit tests. It separately compiles and stages the Windows app, runs the UI-check mode with synthetic demo data and captures previews. Final signing and installer assembly are separate, subsequent steps. Do not call an artifact tested until its job and checks have actually passed.
+No trusted Windows Authenticode certificate is present. Windows may show an unknown-publisher warning. Do not disable security tools to work around it.
 
-Fork isolation: the GUI and elevated updater paths cannot fetch an original-project release, and no Windows updater task is registered. Setup links point to this fork source page. The installer includes the separately signed Android APK; source-page QR codes are not described as APK downloads.
+## Fork isolation and limits
 
-The optional privileged helper uses its original stable Binder API namespace (app.nectarlink.services). The fork app itself keeps its distinct application ID and source namespace. Helper integration and device permissions still need real-device testing.
+Original-project self-updates are disabled in GUI, direct and elevated update paths. No original updater task is registered. The source-page QR code opens this fork's source, not an APK download page.
 
-Release builds target both arm64-v8a and armeabi-v7a, matching the original ARM device coverage. ABI filtering excludes native architectures without a compiled Rust core. A separate Windows validation workflow reuses the native staged artifact, so installer-test corrections do not require another native compilation. It runs after the all-platform or Windows build, not Android-only builds.
+App controls retain upstream languages; there is no Arabic locale. Arabic owner/community branding is included. Some original contributor metadata remains as attribution.
+
+Real-device pairing, permissions and optional elevated/helper integration still need device testing. Compilation, emulator launch and synthetic Windows demo data do not establish these functions end to end.
+
+See `BUILD-TEST-REPORT.md` for the exact test record and artifact provenance. No signing key, password or temporary access credential belongs in this archive.

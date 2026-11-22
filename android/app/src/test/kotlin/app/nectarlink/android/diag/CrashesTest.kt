@@ -13,7 +13,7 @@ class CrashesTest {
         // nectarlink_core::diag::crash::signature(&["exception", "com.eslamelbarbary.wasla.android.Foo.bar",
         // "java.lang.IllegalStateException"]), so a phone's records group with the core's.
         assertEquals(
-            "b3af6c6e31db",
+            "bf0aaea7068b",
             Crashes.signature("exception", "com.eslamelbarbary.wasla.android.Foo.bar", "java.lang.IllegalStateException"),
         )
     }

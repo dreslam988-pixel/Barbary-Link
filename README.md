@@ -1,34 +1,40 @@
 # Barbary Link
 
+برامج إسلام البربري
+
 Independent Android and Windows fork for Eslam Elbarbary, based on [NectarLink](https://github.com/thtbee/nectarlink), commit `3eff9a0`.
 
-## Status
+## Distribution
 
-Build and test verification is in progress. This repository is source code, not a signed app release. Do not install an original NectarLink download expecting it to be Barbary Link. The requested APK, unpublished Play AAB and Windows installer are supplied separately after verification and signing.
+This repository contains source code, not a published signed app release. Verified delivery files are supplied separately: an Android APK, an unpublished AAB, a Windows x64 installer, and a complete project source ZIP. Never install an original NectarLink download expecting it to be Barbary Link.
 
 ## Fork changes
 
-- App name: **Barbary Link**, version 1.0.0.
-- Independent phone-and-monitor icon and Windows installer identity.
+- Product name: **Barbary Link**, version 1.0.0.
+- Independent phone-and-monitor icons, Android application identity and Windows installer identity.
 - Android application ID: `com.eslamelbarbary.wasla`.
-- Owner credit, Facebook and Telegram links.
-- Original-project automatic update and APK-download paths are disabled. Updates must be installed manually from a Barbary Link build signed with the same Android key.
-- The Windows installer includes `Barbary-Link.apk` for its phone-install feature. The staged development package does not include it until final assembly.
+- Arabic owner credit and owner community links.
+- Original-project automatic update and APK-download paths are disabled. Install future Barbary Link updates manually, signed with the same Android key.
+- The final Windows installer includes the separately signed `Barbary-Link.apk` for its phone-install feature.
 
-The upstream feature implementation is retained, including device pairing, files, clipboard, notifications, messages and screen features. Successful compilation is not proof that these work on a particular phone or PC. Device pairing and elevated/optional features need real-device testing.
+The upstream feature implementation is retained, including pairing, files, clipboard, notifications, messages and screen features. This does not mean every feature has been tested on real devices.
 
-The UI retains upstream languages and is **not fully translated into Arabic**. The source-page QR code opens this fork's code, not an APK download page.
+## Language and testing limits
 
-## Build and verification
+The core Windows and Android interfaces are **English in the checks performed**, with upstream translations available in Settings. There is **no complete Arabic translation**. Arabic text in the owner/community section and the infographic does not mean the app's controls are Arabic.
 
-See [BARBARY-LINK.md](BARBARY-LINK.md) for toolchains and build commands. The manual `Barbary Link build` workflow can build Android, Windows or both, using standard runners. It does not contain signing keys, passwords or automatic publishing jobs.
+Android reached Home and Settings in an Android 15 emulator. Windows passed native compilation, UI screenshots and a preflight install/launch/uninstall check. No physical phone-to-PC pairing, phone permissions, calls, messages, transfers, screen streaming or optional elevated features have been verified end to end.
 
-Android release outputs are unsigned unless a keystore is supplied locally. Never commit credentials or signing keys. Keep the Android signing key safe, because future updates need the same key.
+See [BUILD-TEST-REPORT.md](BUILD-TEST-REPORT.md) for exact results, including the corrected test fixture and the distinction between the tested Windows preflight and the final installer.
 
-Windows checks include native compilation, a fork-update-isolation test, UI checks with synthetic phone data and screenshots, and a preflight installer test. Check actual job results before claiming any test passed. The final installer adds the separately signed Android APK after those preflight checks. Windows Authenticode signing is not configured.
+## Build
+
+See [BARBARY-LINK.md](BARBARY-LINK.md) for toolchains and commands. The manual build workflow uses standard GitHub-hosted runners. It contains no signing key, password or automatic release/store publication.
+
+Android outputs are unsigned unless a keystore is supplied locally. Never commit credentials. Windows Authenticode signing is not configured.
 
 ## Licenses and attribution
 
-The Android and desktop applications remain **GPL-3.0-or-later**. Core licensing remains **MPL-2.0** where specified upstream. Original copyright notices and third-party notices are retained in [LICENSE](LICENSE), `LICENSES/`, and the source files. This fork is not affiliated with the original project.
+The Android and desktop applications remain **GPL-3.0-or-later**. Core licensing remains **MPL-2.0** where specified upstream. Original copyright notices, some component metadata credits and third-party notices are retained in [LICENSE](LICENSE), `LICENSES/`, and the source files. This fork is independent of the original project.
 
 [UPSTREAM-README.md](UPSTREAM-README.md) preserves the original documentation. Its original-product download links and screenshots are reference material, not Barbary Link artifacts or proof of this fork's tests.
