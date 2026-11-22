@@ -44,3 +44,5 @@ The manual Barbary Link build workflow compiles Android unsigned release artifac
 Fork isolation: the GUI and elevated updater paths cannot fetch an original-project release, and no Windows updater task is registered. Setup links point to this fork source page. The installer includes the separately signed Android APK; source-page QR codes are not described as APK downloads.
 
 The optional privileged helper uses its original stable Binder API namespace (app.nectarlink.services). The fork app itself keeps its distinct application ID and source namespace. Helper integration and device permissions still need real-device testing.
+
+Release builds target both arm64-v8a and armeabi-v7a, matching the original ARM device coverage. ABI filtering excludes native architectures without a compiled Rust core. A separate Windows validation workflow reuses the native staged artifact, so installer-test corrections do not require another native compilation. It runs after the all-platform or Windows build, not Android-only builds.

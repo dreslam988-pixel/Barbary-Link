@@ -29,6 +29,9 @@ val appVersionCode: Int = run {
     major * 10_000_000 + minor * 100_000 + patch * 1_000 + build
 }
 
+val rustAbis: List<String> =
+    (findProperty("nectarlink.abis") as String?)?.split(",")?.map(String::trim) ?: listOf("arm64-v8a", "x86_64")
+
 android {
     namespace = "com.eslamelbarbary.wasla.android"
     compileSdk = 37
@@ -38,6 +41,8 @@ android {
         applicationId = "com.eslamelbarbary.wasla"
         minSdk = 26
         targetSdk = 37
+        // Do not advertise native ABIs whose Rust core is absent.
+        ndk { abiFilters += rustAbis }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         versionCode = appVersionCode
         versionName = appVersion
@@ -175,8 +180,6 @@ abstract class BundleFonts : DefaultTask() {
 }
 
 val workspaceDir: Directory = rootProject.layout.projectDirectory.dir("..")
-val rustAbis: List<String> =
-    (findProperty("nectarlink.abis") as String?)?.split(",")?.map(String::trim) ?: listOf("arm64-v8a", "x86_64")
 
 androidComponents {
     onVariants { variant ->

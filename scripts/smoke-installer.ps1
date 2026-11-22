@@ -23,7 +23,7 @@ if (-not $Setup -or -not (Test-Path $Setup)) { throw "no setup installer found t
 $dir = Join-Path $env:ProgramFiles 'BarbaryLink'
 $exe = Join-Path $dir 'barbary-link.exe'
 $uninstallKey = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\BarbaryLink'
-$shortcut = Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\BarbaryLink.lnk'
+$shortcut = Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Barbary Link.lnk'
 $desktopShortcut = Join-Path $env:PUBLIC 'Desktop\Barbary Link.lnk'
 $data = if ($env:RUNNER_TEMP) { Join-Path $env:RUNNER_TEMP 'nectarlink-smoke' } else { Join-Path $env:TEMP 'nectarlink-smoke' }
 

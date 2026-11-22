@@ -1,0 +1,75 @@
+name: Barbary Link Windows validation
+on:
+  workflow_run:
+    workflows: ['Barbary Link build']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      stage_run_id:
+        description: Native build run ID containing windows-stage
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: barbary-link-windows-validation
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.event == 'workflow_dispatch' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion != 'cancelled' && !contains(github.event.workflow_run.display_title, 'android'))
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      SOURCE_RUN_ID: ${{ inputs.stage_run_id || github.event.workflow_run.id }}
+      SOURCE_SHA: ${{ github.event.workflow_run.head_sha || 'manual-source-run' }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download the previously built staging artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: windows-stage
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          github-token: ${{ github.token }}
+          path: target/incoming
+      - name: Prepare staged native binaries
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archives = @(Get-ChildItem target/incoming -Recurse -Filter Barbary-Link-windows-stage.zip)
+          if ($archives.Count -ne 1) { throw 'Expected one native staging ZIP' }
+          New-Item -ItemType Directory -Force target/package | Out-Null
+          Expand-Archive $archives[0].FullName -DestinationPath target/package -Force
+          if (-not (Test-Path target/package/BarbaryLink/barbary-link.exe)) { throw 'Native app is missing' }
+          "Native build run: $env:SOURCE_RUN_ID`nNative source: $env:SOURCE_SHA`nValidation source: $env:GITHUB_SHA`nAPK is added during final assembly, not this preflight test." | Set-Content target/validation-source.txt
+      - name: Check actual Windows UI and capture previews
+        shell: pwsh
+        run: ./scripts/ui-check.ps1
+      - name: Build the preflight installer from staged binaries
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          ./scripts/install-nsis.ps1
+          $compiler = (Get-Command makensis -ErrorAction SilentlyContinue).Source
+          if (-not $compiler) { $compiler = Join-Path ${env:ProgramFiles(x86)} 'NSIS/makensis.exe' }
+          $stage = (Resolve-Path target/package/BarbaryLink).Path
+          $out = Join-Path (Resolve-Path target/package).Path 'BarbaryLink-1.0.0-x64-setup.exe'
+          & $compiler /V2 '/DVERSION=1.0.0' '/DBUILD=999' '/DDISPLAY_VERSION=1.0.0' '/DARCH=x64' "/DSTAGE=$stage" "/DICON=$stage/BarbaryLink.ico" "/DOUTFILE=$out" desktop/installer/nectarlink.nsi
+          if ($LASTEXITCODE -ne 0) { throw 'Preflight installer assembly failed' }
+      - name: Test install, launch, shortcuts and uninstall
+        shell: pwsh
+        run: |
+          Start-Transcript -Path target/installer-validation.txt -Force
+          try { ./scripts/smoke-installer.ps1 }
+          finally { Stop-Transcript }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: windows-validation
+          retention-days: 1
+          if-no-files-found: warn
+          path: |
+            target/validation-source.txt
+            target/installer-validation.txt
+            target/ui-check/**/screenshot.png
+            target/ui-check/**/stderr.txt
