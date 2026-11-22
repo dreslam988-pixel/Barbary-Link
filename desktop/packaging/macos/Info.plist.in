@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleExecutable</key>
+    <string>nectarlink-desktop</string>
+    <key>CFBundleIconFile</key>
+    <string>Barbary Link.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>app.nectarlink.desktop</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>Barbary Link</string>
+    <key>CFBundleDisplayName</key>
+    <string>Barbary Link</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>@VERSION@</string>
+    <key>CFBundleVersion</key>
+    <string>@BUNDLE_VERSION@</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Barbary Link discovers and connects to your paired phone over the local network.</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Barbary Link uses Bluetooth to discover nearby paired devices.</string>
+</dict>
+</plist>
