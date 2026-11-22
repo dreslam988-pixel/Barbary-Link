@@ -394,54 +394,9 @@ Section "Install"
   nsExec::Exec 'netsh advfirewall firewall delete rule name="${FIREWALL_RULE}"'
   nsExec::Exec 'netsh advfirewall firewall add rule name="${FIREWALL_RULE}" dir=in action=allow program="$INSTDIR\${EXE}" enable=yes profile=private,domain description="Lets paired phones connect to Barbary Link."'
 
-  ; Updates without an administrator prompt: a task that runs this app as
-  ; SYSTEM to install a newer release (desktop/app/src/updater.rs). Only
-  ; SYSTEM and administrators may change it; signed-in users may read and
-  ; start it. Registered with schtasks from a task definition rather than
-  ; PowerShell, which security software can hold up without a word, leaving
-  ; setup stuck at this step.
-  !insertmacro Progress "step updates"
-  ; Shared folder for update downloads and channel choice: any signed-in user
-  ; on this PC may update them, and the update task checks the download's
-  ; SHA-256 in SystemTemp before running it.
-  ; Owned by administrators, and set on the folder alone: never /T, which
-  ; would follow a junction a user put inside to wherever it points. What
-  ; is created in it from now on inherits the grant.
-  CreateDirectory "$APPDATA\${APP}\updates"
-  nsExec::Exec 'icacls "$APPDATA\${APP}" /setowner *S-1-5-32-544'
-  nsExec::Exec 'icacls "$APPDATA\${APP}" /grant *S-1-5-32-545:(OI)(CI)M'
-  ${If} $AdminOnly != 1
-    ; Updates ask for permission in this folder (see the top of this file).
-    nsExec::Exec 'schtasks /Delete /TN "BarbaryLink Update" /F'
-    Goto updates_done
-  ${EndIf}
-  InitPluginsDir
-  ${WordReplace} "$INSTDIR" "&" "&amp;" "+" $1
-  FileOpen $0 "$PLUGINSDIR\update-task.xml" w
-  FileWriteUTF16LE /BOM $0 '<?xml version="1.0" encoding="UTF-16"?>$\r$\n'
-  FileWriteUTF16LE $0 '<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">$\r$\n'
-  FileWriteUTF16LE $0 '  <RegistrationInfo>$\r$\n'
-  FileWriteUTF16LE $0 '    <Description>Installs new versions of Barbary Link from its GitHub releases.</Description>$\r$\n'
-  FileWriteUTF16LE $0 '    <SecurityDescriptor>D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;GRGX;;;AU)</SecurityDescriptor>$\r$\n'
-  FileWriteUTF16LE $0 '  </RegistrationInfo>$\r$\n'
-  FileWriteUTF16LE $0 '  <Principals>$\r$\n'
-  FileWriteUTF16LE $0 '    <Principal id="Author"><UserId>S-1-5-18</UserId><RunLevel>HighestAvailable</RunLevel></Principal>$\r$\n'
-  FileWriteUTF16LE $0 '  </Principals>$\r$\n'
-  FileWriteUTF16LE $0 '  <Settings>$\r$\n'
-  FileWriteUTF16LE $0 '    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>$\r$\n'
-  FileWriteUTF16LE $0 '    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>$\r$\n'
-  FileWriteUTF16LE $0 '    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>$\r$\n'
-  FileWriteUTF16LE $0 '    <AllowStartOnDemand>true</AllowStartOnDemand>$\r$\n'
-  FileWriteUTF16LE $0 '    <Enabled>true</Enabled>$\r$\n'
-  FileWriteUTF16LE $0 '    <ExecutionTimeLimit>PT30M</ExecutionTimeLimit>$\r$\n'
-  FileWriteUTF16LE $0 '  </Settings>$\r$\n'
-  FileWriteUTF16LE $0 '  <Actions Context="Author">$\r$\n'
-  FileWriteUTF16LE $0 '    <Exec><Command>"$1\${EXE}"</Command><Arguments>--update-service</Arguments></Exec>$\r$\n'
-  FileWriteUTF16LE $0 '  </Actions>$\r$\n'
-  FileWriteUTF16LE $0 '</Task>$\r$\n'
-  FileClose $0
-  nsExec::Exec 'schtasks /Create /TN "BarbaryLink Update" /XML "$PLUGINSDIR\update-task.xml" /F'
-  updates_done:
+  ; No original-project update service is registered for this fork.
+  nsExec::Exec 'schtasks /Delete /TN "BarbaryLink Update" /F'
+  Pop $0
 
   !insertmacro Progress "step shortcuts"
   CreateShortCut "$SMPROGRAMS\${DISPLAY}.lnk" "$INSTDIR\${EXE}" "" "$INSTDIR\${EXE}" 0 "" "" "Your phone, on your PC"
@@ -491,7 +446,7 @@ Section "Install"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "Publisher" "The NectarLink contributors"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\${EXE}"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKLM "${UNINSTALL_KEY}" "URLInfoAbout" "https://github.com/thtbee/nectarlink"
+  WriteRegStr HKLM "${UNINSTALL_KEY}" "URLInfoAbout" "https://github.com/dreslam988-pixel/Barbary-Link"
   ; Windows Settings > Apps opens Barbary Link's own uninstall window.
   WriteRegStr HKLM "${UNINSTALL_KEY}" "UninstallString" '"$INSTDIR\${EXE}" --remove'
   WriteRegStr HKLM "${UNINSTALL_KEY}" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'

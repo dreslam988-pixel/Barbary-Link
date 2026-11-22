@@ -13,8 +13,8 @@ class LinksTest {
         assertEquals("https://t.me/apkok2026", Link.DISCORD.url)
         assertEquals("https://www.facebook.com/dr.barbary2", Link.X.url)
         assertEquals("https://t.me/apkok2026", Link.DONATE.url)
-        assertEquals("https://github.com/thtbee/nectarlink", Link.REPO.url)
-        assertEquals("https://github.com/thtbee/nectarlink/releases", Link.RELEASES.url)
+        assertEquals("https://github.com/dreslam988-pixel/Barbary-Link", Link.REPO.url)
+        assertEquals("https://github.com/dreslam988-pixel/Barbary-Link", Link.RELEASES.url)
     }
 
     @Test

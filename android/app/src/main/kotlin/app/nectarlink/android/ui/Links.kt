@@ -16,8 +16,8 @@ internal enum class Link(val url: String) {
     DISCORD("https://t.me/apkok2026"),
     X("https://www.facebook.com/dr.barbary2"),
     DONATE("https://t.me/apkok2026"),
-    REPO("https://github.com/thtbee/nectarlink"),
-    RELEASES("https://github.com/thtbee/nectarlink/releases"),
+    REPO("https://github.com/dreslam988-pixel/Barbary-Link"),
+    RELEASES("https://github.com/dreslam988-pixel/Barbary-Link"),
     ;
 
     companion object {

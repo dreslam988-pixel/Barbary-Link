@@ -49,3 +49,6 @@
 
 # Custom ROM Nectarlink Services AIDL contract
 -keep class com.eslamelbarbary.wasla.services.** { *; }
+
+# Stable Binder protocol namespace shared with the optional privileged helper.
+-keep class app.nectarlink.services.** { *; }

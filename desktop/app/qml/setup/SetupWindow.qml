@@ -479,7 +479,7 @@ NativeWindow {
                 color: window.muted
                 text: window.removing
                     ? qsTr("Your received files are still in %1. Thanks for giving it a try.").arg("Downloads\\BarbaryLink")
-                    : qsTr("Next, get the Android app. Scan this code with your phone's camera to open its download page.")
+                    : qsTr("Install the included Barbary-Link.apk on your Android phone. The code below opens this fork's source page, not an APK download.")
             }
 
             Item { width: 1; height: window.removing ? 0 : 20 }
@@ -500,7 +500,7 @@ NativeWindow {
                     sourceSize: Qt.size(248, 248)
                     smooth: false
                     Accessible.role: Accessible.Graphic
-                    Accessible.name: qsTr("QR code for the Android app download page")
+                    Accessible.name: qsTr("QR code for the Barbary Link source page")
                 }
             }
             Item { width: 1; height: window.removing ? 0 : 12 }
@@ -511,9 +511,9 @@ NativeWindow {
                 font.pixelSize: 13
                 font.underline: true
                 color: window.honey
-                text: "github.com/thtbee/nectarlink/releases/latest"
+                text: "github.com/dreslam988-pixel/Barbary-Link"
                 Accessible.role: Accessible.Link
-                Accessible.name: qsTr("Open the Android app download page")
+                Accessible.name: qsTr("Open the Barbary Link source page")
                 Accessible.onPressAction: Setup.openAndroidPage()
                 MouseArea {
                     anchors.fill: parent

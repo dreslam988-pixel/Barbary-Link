@@ -110,7 +110,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 role: "body"
                 color: Theme.surfaceContent
-                text: qsTr("Come chat on Discord?")
+                text: qsTr("Follow updates on Telegram?")
                 rightPadding: 2
             }
 
@@ -118,7 +118,7 @@ Item {
                 objectName: "joinButton"
                 anchors.verticalCenter: parent.verticalCenter
                 size: "sm"
-                text: qsTr("Join Discord")
+                text: qsTr("Open Telegram")
                 enabled: prompt.open
                 onClicked: prompt.join()
             }

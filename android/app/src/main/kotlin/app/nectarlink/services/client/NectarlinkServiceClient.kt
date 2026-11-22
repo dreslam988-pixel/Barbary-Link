@@ -12,11 +12,11 @@ import android.os.IBinder
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import java.security.MessageDigest
-import com.eslamelbarbary.wasla.services.IDisplaySession
-import com.eslamelbarbary.wasla.services.INectarlinkService
-import com.eslamelbarbary.wasla.services.INectarlinkServiceCallback
-import com.eslamelbarbary.wasla.services.PointerScreenInfo
-import com.eslamelbarbary.wasla.services.ServiceStatus
+import app.nectarlink.services.IDisplaySession
+import app.nectarlink.services.INectarlinkService
+import app.nectarlink.services.INectarlinkServiceCallback
+import app.nectarlink.services.PointerScreenInfo
+import app.nectarlink.services.ServiceStatus
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-package com.eslamelbarbary.wasla.services
+package app.nectarlink.services
 
 import android.os.Parcel
 import android.os.Parcelable

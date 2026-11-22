@@ -241,9 +241,9 @@
     <string name="star_channel">Barbary Link 项目</string>
     <string name="star_title">喜欢 Barbary Link 吗？</string>
     <string name="star_text">点按前往 GitHub 点星，帮助更多人发现它。</string>
-    <string name="support_title">支持 Barbary Link</string>
-    <string name="support_body">Barbary Link 免费且开源。如果它让你的日子轻松了一点，可以支持它继续走下去。谢谢！</string>
-    <string name="support_action">支持</string>
+    <string name="support_title">تواصل مع إسلام البربري</string>
+    <string name="support_body">نسخة مستقلة باسم إسلام البربري، مبنية على NectarLink مع حفظ حقوق المطورين الأصليين. الواجهة ليست مترجمة بالكامل للعربية.</string>
+    <string name="support_action">فتح تليجرام</string>
     <string name="settings_comb_motion">动态蜂巢</string>
     <string name="settings_comb_motion_hint">蜂巢会呼吸与脉动。开启“移除动画”或省电模式后保持静止。</string>
     <string name="theme_bloom">绽放</string>
@@ -1470,7 +1470,7 @@
     <string name="whats_new_in_this_version">此版本中</string>
     <string name="whats_new_more">还有 %1$d 项</string>
     <string name="whats_new_empty">此版本没有可列出的内容。</string>
-    <string name="whats_new_release_notes">GitHub 上的更新说明</string>
+    <string name="whats_new_release_notes">السورس وسجل التعديلات</string>
     <!-- Calls through WhatsApp from the PC (#434) -->
     <string name="app_call_channel">来自电脑的通话</string>
     <string name="app_call_title">通过 %2$s 呼叫 %1$s</string>
@@ -1479,15 +1479,15 @@
     <string name="pc_mirror_screen">屏幕 %1$d</string>
     <string name="pc_mirror_screen_desc">正在显示第 %1$d 个屏幕，共 %2$d 个。点按切换到下一个。</string>
     <!-- Community: Discord, X, GitHub and support -->
-    <string name="community_title">社区</string>
-    <string name="community_discord_title">Discord</string>
-    <string name="community_discord_body">我们的服务器。提问、分享想法，和大家一起试用新版本。</string>
-    <string name="community_x_title">𝕏</string>
-    <string name="community_x_body">关注我。我会在那里发布 Barbary Link 接下来的内容和我做的其他东西。</string>
-    <string name="community_github_title">GitHub</string>
-    <string name="community_github_body">源代码、问题和版本发布。</string>
-    <string name="community_invite_title">来 Discord 聊聊</string>
-    <string name="community_invite_text">提问、想法和抢先版本，和制作及使用 Barbary Link 的人一起。</string>
-    <string name="community_invite_join">加入 Discord</string>
+    <string name="community_title">برامج إسلام البربري</string>
+    <string name="community_discord_title">Telegram</string>
+    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_x_title">Facebook</string>
+    <string name="community_x_body">صفحة إسلام البربري.</string>
+    <string name="community_github_title">السورس المعدل والتراخيص</string>
+    <string name="community_github_body">كود النسخة المعدلة متاح برابط المشروع، مع حفظ حقوق NectarLink.</string>
+    <string name="community_invite_title">برامج إسلام البربري</string>
+    <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_invite_join">فتح تليجرام</string>
     <string name="community_invite_later">以后再说</string>
 </resources>

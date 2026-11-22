@@ -67,25 +67,7 @@ Check "it's in the Start menu" (Test-Path $shortcut)
 Check "a first install adds a desktop shortcut" (Test-Path $desktopShortcut)
 Check "the firewall lets phones in" ([bool](FirewallRule))
 Check "license notices are included" ((Get-Item (Join-Path $dir 'THIRD-PARTY-NOTICES.txt')).Length -gt 100KB)
-$task = UpdateTask
-Check "the update task is registered" ($null -ne $task)
-Check "the update task runs the installed app as SYSTEM" (
-    $task.Definition.Principal.UserId -match '^(SYSTEM|S-1-5-18|NT AUTHORITY\\SYSTEM)$' -and
-    $task.Definition.Actions.Item(1).Path.Trim('"') -eq $exe -and
-    $task.Definition.Actions.Item(1).Arguments -eq '--update-service')
-# 4: the DACL. Signed-in users may read and run it, not change it. Windows
-# reports the rights it maps them to (GRGX comes back as 0x1200a9), so check
-# the access masks rather than the text.
-$sddl = $task.GetSecurityDescriptor(4)
-Write-Host "update task permissions: $sddl"
-$sd = New-Object System.Security.AccessControl.RawSecurityDescriptor $sddl
-Check "SYSTEM and administrators may change the update task" (
-    ((Test-TaskRights $sd 'S-1-5-18' 0x1F01FF) -or (Test-TaskRights $sd 'S-1-5-18' 0x10000000)) -and
-    ((Test-TaskRights $sd 'S-1-5-32-544' 0x1F01FF) -or (Test-TaskRights $sd 'S-1-5-32-544' 0x10000000)))
-# FILE_EXECUTE, or GENERIC_EXECUTE if it isn't mapped.
-Check "signed-in users may start the update task" (
-    (Test-TaskRights $sd 'S-1-5-11' 0x20) -or (Test-TaskRights $sd 'S-1-5-11' 0x20000000))
-Check "nobody else may change or delete the update task" (-not (Test-OthersMayWrite $sd))
+Check "the fork registers no original-project updater task" ($null -eq (UpdateTask))
 
 # The desktop shortcut: an update (no /DESKTOP, as the updater runs it) leaves
 # a deleted one deleted; the setup window's choice adds or removes it.
@@ -138,12 +120,11 @@ Check "the app is installed in the chosen folder" (Test-Path $customExe)
 Check "nothing went into Program Files" (-not (Test-Path $dir))
 Check "the chosen folder is locked like Program Files" (Test-Locked $custom)
 Check "the folder setup created above it is locked too" (Test-Locked $top)
-Check "an admin-only folder gets the update task" (
-    $null -ne ($task = UpdateTask) -and $task.Definition.Actions.Item(1).Path.Trim('"') -eq $customExe)
+Check "an admin-only fork install has no updater task" ($null -eq (UpdateTask))
 Check "the chosen folder is remembered" ((Get-ItemProperty $reg).InstallDir -eq $custom -and (Get-ItemProperty $reg).AdminOnlyFolder -eq 1)
 Start-Process $Setup -ArgumentList '/S' -Wait
 Check "an update goes to the chosen folder" ((Test-Path $customExe) -and -not (Test-Path $dir))
-Check "an update keeps the update task" ($null -ne (UpdateTask))
+Check "a reinstall keeps the updater task absent" ($null -eq (UpdateTask))
 Start-Process (Join-Path $custom 'uninstall.exe') -ArgumentList '/S' -Wait
 $deadline = (Get-Date).AddSeconds(60)
 while ((Test-Path $custom) -and (Get-Date) -lt $deadline) { Start-Sleep 1 }

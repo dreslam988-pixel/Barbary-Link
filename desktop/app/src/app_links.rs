@@ -17,8 +17,8 @@ fn the_links_are_pinned() {
         ("discord", "https://t.me/apkok2026"),
         ("x", "https://www.facebook.com/dr.barbary2"),
         ("donate", "https://t.me/apkok2026"),
-        ("repo", "https://github.com/thtbee/nectarlink"),
-        ("releases", "https://github.com/thtbee/nectarlink/releases"),
+        ("repo", "https://github.com/dreslam988-pixel/Barbary-Link"),
+        ("releases", "https://github.com/dreslam988-pixel/Barbary-Link"),
     ] {
         let line = format!("readonly property string {key}: \"{url}\"");
         assert!(LINKS.contains(&line), "{key} must be {url}");

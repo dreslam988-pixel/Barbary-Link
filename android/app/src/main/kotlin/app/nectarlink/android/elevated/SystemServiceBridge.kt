@@ -2,7 +2,7 @@
 package com.eslamelbarbary.wasla.android.elevated
 
 import android.os.ParcelFileDescriptor
-import com.eslamelbarbary.wasla.services.IDisplaySession
+import app.nectarlink.services.IDisplaySession
 import com.eslamelbarbary.wasla.services.client.NectarlinkServiceClient
 import com.eslamelbarbary.wasla.services.client.NectarlinkServiceContract
 import java.io.Closeable

@@ -246,9 +246,9 @@
     <string name="star_channel">Barbary Linkプロジェクト</string>
     <string name="star_title">Barbary Linkはいかがですか？</string>
     <string name="star_text">タップしてGitHubでスターを付けてください。他の人が見つけやすくなります。</string>
-    <string name="support_title">Barbary Linkを支援</string>
-    <string name="support_body">Barbary Linkは無料かつオープンソースです。もし日々の生活が少しでも便利になったなら、ぜひ活動の継続にご協力ください。ありがとうございます！</string>
-    <string name="support_action">サポート</string>
+    <string name="support_title">تواصل مع إسلام البربري</string>
+    <string name="support_body">نسخة مستقلة باسم إسلام البربري، مبنية على NectarLink مع حفظ حقوق المطورين الأصليين. الواجهة ليست مترجمة بالكامل للعربية.</string>
+    <string name="support_action">فتح تليجرام</string>
     <string name="settings_comb_motion">蜂の巣のアニメーション</string>
     <string name="settings_comb_motion_hint">ハニカムは呼吸し、脈動します。「アニメーションの無効化」または「バッテリー セーバー」がオンの状態では、静止したままになります。</string>
     <string name="theme_bloom">Bloom</string>
@@ -1602,7 +1602,7 @@
     <string name="whats_new_in_this_version">このバージョン</string>
     <string name="whats_new_more">ほか %1$d 件</string>
     <string name="whats_new_empty">このビルドで表示する項目はありません。</string>
-    <string name="whats_new_release_notes">GitHub のリリースノート</string>
+    <string name="whats_new_release_notes">السورس وسجل التعديلات</string>
     <!-- Calls through WhatsApp from the PC (#434) -->
     <string name="app_call_channel">PC からの通話</string>
     <string name="app_call_title">%2$s で %1$s に発信</string>
@@ -1611,16 +1611,16 @@
     <string name="pc_mirror_screen">画面 %1$d</string>
     <string name="pc_mirror_screen_desc">%2$d 台中 %1$d 台目の画面を表示中。タップで次の画面へ。</string>
     <!-- Community: Discord, X, GitHub and support -->
-    <string name="community_title">コミュニティ</string>
-    <string name="community_discord_title">Discord</string>
-    <string name="community_discord_body">私たちのサーバーです。質問やアイデアの共有、新しいビルドのお試しをみんなで。</string>
-    <string name="community_x_title">𝕏</string>
-    <string name="community_x_body">フォローしてください。Barbary Link の次の機能や、ほかに作っているものを投稿しています。</string>
-    <string name="community_github_title">GitHub</string>
-    <string name="community_github_body">ソースコード、Issue、リリース。</string>
-    <string name="community_invite_title">Discord で話しましょう</string>
-    <string name="community_invite_text">質問、アイデア、先行ビルド。Barbary Link を作る人、使う人と一緒に。</string>
-    <string name="community_invite_join">Discord に参加</string>
+    <string name="community_title">برامج إسلام البربري</string>
+    <string name="community_discord_title">Telegram</string>
+    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_x_title">Facebook</string>
+    <string name="community_x_body">صفحة إسلام البربري.</string>
+    <string name="community_github_title">السورس المعدل والتراخيص</string>
+    <string name="community_github_body">كود النسخة المعدلة متاح برابط المشروع، مع حفظ حقوق NectarLink.</string>
+    <string name="community_invite_title">برامج إسلام البربري</string>
+    <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_invite_join">فتح تليجرام</string>
     <string name="community_invite_later">今はしない</string>
 </resources>
 

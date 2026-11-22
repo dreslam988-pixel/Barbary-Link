@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package com.eslamelbarbary.wasla.android.elevated
 
-import com.eslamelbarbary.wasla.services.ServiceStatus
+import app.nectarlink.services.ServiceStatus
 import com.eslamelbarbary.wasla.services.client.NectarlinkServiceContract
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

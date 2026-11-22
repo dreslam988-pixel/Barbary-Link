@@ -251,9 +251,9 @@
     <string name="star_channel">Projekt Barbary Link</string>
     <string name="star_title">Podoba Ci się Barbary Link?</string>
     <string name="star_text">Dotknij, aby dać projektowi gwiazdkę w serwisie GitHub. Pomoże to innym go znaleźć.</string>
-    <string name="support_title">Wesprzyj Barbary Link</string>
-    <string name="support_body">Barbary Link jest bezpłatny i ma otwarty kod źródłowy. Jeśli ułatwia Ci codzienne życie, możesz wesprzeć jego dalszy rozwój. Dziękujemy!</string>
-    <string name="support_action">Wesprzyj</string>
+    <string name="support_title">تواصل مع إسلام البربري</string>
+    <string name="support_body">نسخة مستقلة باسم إسلام البربري، مبنية على NectarLink مع حفظ حقوق المطورين الأصليين. الواجهة ليست مترجمة بالكامل للعربية.</string>
+    <string name="support_action">فتح تليجرام</string>
     <string name="settings_comb_motion">Animowany plaster miodu</string>
     <string name="settings_comb_motion_hint">Plaster miodu oddycha i pulsuje. Pozostaje nieruchomy, gdy włączone jest usuwanie animacji lub oszczędzanie baterii.</string>
     <string name="theme_bloom">Rozkwit</string>
@@ -1629,7 +1629,7 @@
     <string name="whats_new_in_this_version">W tej wersji</string>
     <string name="whats_new_more">i %1$d więcej</string>
     <string name="whats_new_empty">Nie ma nic do pokazania dla tej kompilacji.</string>
-    <string name="whats_new_release_notes">Informacje o wersji na GitHubie</string>
+    <string name="whats_new_release_notes">السورس وسجل التعديلات</string>
     <!-- Calls through WhatsApp from the PC (#434) -->
     <string name="app_call_channel">Połączenia z komputera</string>
     <string name="app_call_title">Zadzwoń do: %1$s przez %2$s</string>
@@ -1638,16 +1638,16 @@
     <string name="pc_mirror_screen">Ekran %1$d</string>
     <string name="pc_mirror_screen_desc">Ekran %1$d z %2$d. Dotknij, aby przejść do następnego.</string>
     <!-- Community: Discord, X, GitHub and support -->
-    <string name="community_title">Społeczność</string>
-    <string name="community_discord_title">Discord</string>
-    <string name="community_discord_body">Nasz serwer. Zadawaj pytania, dziel się pomysłami i testuj nowe wersje z innymi.</string>
-    <string name="community_x_title">𝕏</string>
-    <string name="community_x_body">Obserwuj mnie. Piszę o tym, co nadchodzi w Barbary Link, i o innych rzeczach, które robię.</string>
-    <string name="community_github_title">GitHub</string>
-    <string name="community_github_body">Kod źródłowy, zgłoszenia i wydania.</string>
-    <string name="community_invite_title">Wpadnij na Discorda</string>
-    <string name="community_invite_text">Pytania, pomysły i wczesne wersje, razem z twórcami i użytkownikami Barbary Link.</string>
-    <string name="community_invite_join">Dołącz do Discorda</string>
+    <string name="community_title">برامج إسلام البربري</string>
+    <string name="community_discord_title">Telegram</string>
+    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_x_title">Facebook</string>
+    <string name="community_x_body">صفحة إسلام البربري.</string>
+    <string name="community_github_title">السورس المعدل والتراخيص</string>
+    <string name="community_github_body">كود النسخة المعدلة متاح برابط المشروع، مع حفظ حقوق NectarLink.</string>
+    <string name="community_invite_title">برامج إسلام البربري</string>
+    <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_invite_join">فتح تليجرام</string>
     <string name="community_invite_later">Nie teraz</string>
 </resources>
 

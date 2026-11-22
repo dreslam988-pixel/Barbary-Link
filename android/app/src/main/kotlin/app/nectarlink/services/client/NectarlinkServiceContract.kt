@@ -3,7 +3,7 @@ package com.eslamelbarbary.wasla.services.client
 
 object NectarlinkServiceContract {
     const val SERVICE_PACKAGE = "sn.nectarlink.services"
-    const val SERVICE_CLASS = "com.eslamelbarbary.wasla.services.service.NectarlinkPrivilegedService"
+    const val SERVICE_CLASS = "app.nectarlink.services.service.NectarlinkPrivilegedService"
     const val ACTION_BIND = "sn.nectarlink.services.ACTION_BIND"
     const val ACTION_SETTINGS = "sn.nectarlink.services.ACTION_SETTINGS"
 

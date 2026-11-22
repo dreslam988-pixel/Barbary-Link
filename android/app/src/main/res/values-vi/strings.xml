@@ -246,9 +246,9 @@
 <string name="star_channel">Dự án Barbary Link</string>
 <string name="star_title">Thích Barbary Link?</string>
 <string name="star_text">Chạm để gắn sao trên GitHub. Nó giúp nhiều người khác tìm thấy.</string>
-<string name="support_title">Ủng hộ Barbary Link</string>
-<string name="support_body">Barbary Link miễn phí và mã nguồn mở. Nếu nó giúp ngày của bạn dễ dàng hơn một chút, bạn có thể ủng hộ để nó tiếp tục phát triển. Cảm ơn bạn!</string>
-<string name="support_action">Ủng hộ</string>
+<string name="support_title">تواصل مع إسلام البربري</string>
+<string name="support_body">نسخة مستقلة باسم إسلام البربري، مبنية على NectarLink مع حفظ حقوق المطورين الأصليين. الواجهة ليست مترجمة بالكامل للعربية.</string>
+<string name="support_action">فتح تليجرام</string>
 <string name="settings_comb_motion">Tổ ong động</string>
 <string name="settings_comb_motion_hint">Tổ ong thở và đập. Nó sẽ đứng yên khi bật Loại bỏ hiệu ứng động hoặc trình tiết kiệm pin.</string>
 <string name="theme_bloom">Bloom</string>
@@ -1540,7 +1540,7 @@
     <string name="whats_new_in_this_version">Trong phiên bản này</string>
     <string name="whats_new_more">và %1$d mục khác</string>
     <string name="whats_new_empty">Không có gì để hiển thị cho bản dựng này.</string>
-    <string name="whats_new_release_notes">Ghi chú phát hành trên GitHub</string>
+    <string name="whats_new_release_notes">السورس وسجل التعديلات</string>
     <!-- Calls through WhatsApp from the PC (#434) -->
     <string name="app_call_channel">Cuộc gọi từ máy tính</string>
     <string name="app_call_title">Gọi %1$s qua %2$s</string>
@@ -1549,15 +1549,15 @@
     <string name="pc_mirror_screen">Màn hình %1$d</string>
     <string name="pc_mirror_screen_desc">Đang hiện màn hình %1$d trên %2$d. Nhấn để chuyển sang màn hình tiếp theo.</string>
     <!-- Community: Discord, X, GitHub and support -->
-    <string name="community_title">Cộng đồng</string>
-    <string name="community_discord_title">Discord</string>
-    <string name="community_discord_body">Máy chủ của chúng tôi. Đặt câu hỏi, chia sẻ ý tưởng và thử bản dựng mới cùng mọi người.</string>
-    <string name="community_x_title">𝕏</string>
-    <string name="community_x_body">Theo dõi mình nhé. Mình đăng những gì sắp có trên Barbary Link và những thứ khác mình làm.</string>
-    <string name="community_github_title">GitHub</string>
-    <string name="community_github_body">Mã nguồn, issue và các bản phát hành.</string>
-    <string name="community_invite_title">Cùng trò chuyện trên Discord</string>
-    <string name="community_invite_text">Câu hỏi, ý tưởng và bản dựng sớm, cùng những người làm và dùng Barbary Link.</string>
-    <string name="community_invite_join">Tham gia Discord</string>
+    <string name="community_title">برامج إسلام البربري</string>
+    <string name="community_discord_title">Telegram</string>
+    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_x_title">Facebook</string>
+    <string name="community_x_body">صفحة إسلام البربري.</string>
+    <string name="community_github_title">السورس المعدل والتراخيص</string>
+    <string name="community_github_body">كود النسخة المعدلة متاح برابط المشروع، مع حفظ حقوق NectarLink.</string>
+    <string name="community_invite_title">برامج إسلام البربري</string>
+    <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_invite_join">فتح تليجرام</string>
     <string name="community_invite_later">Để sau</string>
 </resources>

@@ -372,6 +372,7 @@ class AppUpdater(context: Context) {
 
     /** Downloads, checks and hands the update to Android's installer. */
     suspend fun install(update: Update, automatic: Boolean = false) {
+        if (!enabled) return
         if (!busy.tryLock()) return
         try {
             prefs.edit { putBoolean(LAST_AUTOMATIC, automatic) }

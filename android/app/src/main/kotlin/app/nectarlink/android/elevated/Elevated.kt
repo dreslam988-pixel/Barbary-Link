@@ -22,7 +22,7 @@ import com.eslamelbarbary.wasla.android.calls.CallCompanion
 import com.eslamelbarbary.wasla.android.notifications.NotificationListener
 import app.nectarlink.core.MirrorInputEvent
 import app.nectarlink.core.TouchPhase
-import com.eslamelbarbary.wasla.services.ServiceStatus
+import app.nectarlink.services.ServiceStatus
 import com.eslamelbarbary.wasla.services.client.NectarlinkServiceClient
 import com.eslamelbarbary.wasla.services.client.NectarlinkServiceContract
 import io.github.muntashirakon.adb.AbsAdbConnectionManager

@@ -972,7 +972,7 @@ FocusScope {
 
                                     Txt {
                                         Layout.fillWidth: true
-                                        text: qsTr("Open the latest GitHub Release on your phone or copy the release link.")
+                                        text: qsTr("Copy the included Barbary-Link.apk to your Android phone and open it to install. This fork is supplied directly, not through the original project's releases.")
                                         role: "caption"
                                         color: Theme.surfaceContentVariant
                                         wrapMode: Text.WordWrap
@@ -983,11 +983,11 @@ FocusScope {
                                         spacing: 8
 
                                         Button {
-                                            text: qsTr("Open release page")
+                                            text: qsTr("Open source page")
                                             iconPath: Icons.openExternal
                                             variant: "tonal"
                                             size: "sm"
-                                            Accessible.name: qsTr("Open Android release page in browser")
+                                            Accessible.name: qsTr("Open Barbary Link source page in browser")
                                             onClicked: Links.open("latestRelease")
                                         }
 
@@ -998,9 +998,9 @@ FocusScope {
                                             iconPath: copied ? Icons.check : Icons.copy
                                             variant: "outline"
                                             size: "sm"
-                                            Accessible.name: qsTr("Copy Android release URL")
+                                            Accessible.name: qsTr("Copy Barbary Link source URL")
                                             onClicked: {
-                                                AppController.copyText("https://github.com/thtbee/nectarlink/releases/latest")
+                                                AppController.copyText("https://github.com/dreslam988-pixel/Barbary-Link")
                                                 copied = true
                                                 resetCopyUrlTimer.restart()
                                             }

@@ -13,7 +13,7 @@ Automatic installation of original-project updates is disabled in this fork. Upd
 Upstream licenses and copyright notices are retained in LICENSE and LICENSES.
 The Android and desktop applications remain GPL-3.0-or-later; core licenses remain unchanged.
 
-Windows source branding is preparatory; no Windows binary was compiled or tested in this environment.
+Windows compilation and UI checks are tracked separately from Android. See the supplied build/test report for actual results.
 Do not publish a Windows build until the installer identity, update tasks, download targets and complete runtime behavior have been reviewed on Windows.
 Android-to-PC pairing requires device testing and is not established by a successful compilation.
 
@@ -29,7 +29,7 @@ Release signing is not configured in source. Without NECTARLINK_KEYSTORE and NEC
 
 The FFI source is generated through tools/barbary-bindgen, pinned to UniFFI 0.32.2, and compiled in android/corebindings to reduce peak compilation memory. Its package remains app.nectarlink.core; only Android application code was moved to the new namespace.
 
-The local Android Rust profile currently disables LTO, uses optimization level 1 for dependencies and no optimization for nectarlink-core. This preserved functions but performance has not been measured. Restore upstream Android profile settings for a performance-tested production build on a stronger build machine.
+The production Android Rust optimization profile is retained. Performance still needs measurement on real devices.
 
 No APK, AAB, unit-test suite or live Android UI has yet passed verification. Do not describe source compilation of individual components as successful application testing.
 
@@ -40,3 +40,7 @@ Upstream GitHub workflows have the .disabled suffix in this handoff so that uplo
 The production Rust optimization profile has been restored for GitHub-hosted standard runners. Desktop brand, native icon, installer identity and optional component CLSIDs are now distinct. Windows installers must include the separately signed Barbary-Link.apk beside the desktop executable. Original-project auto-updates and APK downloads are not used.
 
 The manual Barbary Link build workflow compiles Android unsigned release artifacts and runs unit tests. It separately compiles and stages the Windows app, runs the UI-check mode with synthetic demo data and captures previews. Final signing and installer assembly are separate, subsequent steps. Do not call an artifact tested until its job and checks have actually passed.
+
+Fork isolation: the GUI and elevated updater paths cannot fetch an original-project release, and no Windows updater task is registered. Setup links point to this fork source page. The installer includes the separately signed Android APK; source-page QR codes are not described as APK downloads.
+
+The optional privileged helper uses its original stable Binder API namespace (app.nectarlink.services). The fork app itself keeps its distinct application ID and source namespace. Helper integration and device permissions still need real-device testing.

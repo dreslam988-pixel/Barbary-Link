@@ -249,9 +249,9 @@
     <string name="star_channel">Barbary Link project</string>
     <string name="star_title">Enjoying Barbary Link?</string>
     <string name="star_text">Tap to star it on GitHub. It helps other people find it.</string>
-    <string name="support_title">تطبيقات مجانية</string>
-    <string name="support_body">تطوير وتعريب إسلام البربري. هذه نسخة مستقلة وغير تابعة للمشروع الأصلي.</string>
-    <string name="support_action">تليجرام</string>
+    <string name="support_title">تواصل مع إسلام البربري</string>
+    <string name="support_body">نسخة مستقلة باسم إسلام البربري، مبنية على NectarLink مع حفظ حقوق المطورين الأصليين. الواجهة ليست مترجمة بالكامل للعربية.</string>
+    <string name="support_action">فتح تليجرام</string>
     <string name="settings_comb_motion">Animated comb</string>
     <string name="settings_comb_motion_hint">The honeycomb breathes and pulses. It holds still with Remove animations or battery saver on.</string>
     <string name="theme_bloom">Bloom</string>
@@ -1613,7 +1613,7 @@
     <string name="whats_new_in_this_version">In this version</string>
     <string name="whats_new_more">and %1$d more</string>
     <string name="whats_new_empty">Nothing to list for this build.</string>
-    <string name="whats_new_release_notes">Release notes on GitHub</string>
+    <string name="whats_new_release_notes">السورس وسجل التعديلات</string>
     <!-- Calls through WhatsApp from the PC (#434) -->
     <string name="app_call_channel">Calls from your PC</string>
     <string name="app_call_title">Call %1$s on %2$s</string>
@@ -1623,12 +1623,12 @@
     <string name="pc_mirror_screen_desc">Showing screen %1$d of %2$d. Tap for the next one.</string>
     <!-- Community: Discord, X, GitHub and support -->
     <string name="community_title">برامج إسلام البربري</string>
-    <string name="community_discord_title">تليجرام</string>
-    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات.</string>
-    <string name="community_x_title">فيسبوك</string>
+    <string name="community_discord_title">Telegram</string>
+    <string name="community_discord_body">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
+    <string name="community_x_title">Facebook</string>
     <string name="community_x_body">صفحة إسلام البربري.</string>
-    <string name="community_github_title">المشروع الأصلي والتراخيص</string>
-    <string name="community_github_body">مبني على مشروع NectarLink مفتوح المصدر. السورس المعدل مرفق مع هذه النسخة.</string>
+    <string name="community_github_title">السورس المعدل والتراخيص</string>
+    <string name="community_github_body">كود النسخة المعدلة متاح برابط المشروع، مع حفظ حقوق NectarLink.</string>
     <string name="community_invite_title">برامج إسلام البربري</string>
     <string name="community_invite_text">تابع التطبيقات المجانية والتحديثات عبر تليجرام.</string>
     <string name="community_invite_join">فتح تليجرام</string>

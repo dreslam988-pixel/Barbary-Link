@@ -79,9 +79,20 @@ jobs:
       - name: Build and stage native Windows companion
         shell: pwsh
         run: ./scripts/package.ps1 -StageOnly
+      - name: Test fork update isolation
+        shell: pwsh
+        run: cargo test --locked --release -p nectarlink-desktop --bin barbary-link barbary_fork_has_no_automatic_update_feed
       - name: Check Windows UI and capture previews
         shell: pwsh
         run: ./scripts/ui-check.ps1
+      - name: Install NSIS and build a preflight installer
+        shell: pwsh
+        run: |
+          ./scripts/install-nsis.ps1
+          ./scripts/package.ps1 -SkipBuild
+      - name: Test preflight install, launch and removal
+        shell: pwsh
+        run: ./scripts/smoke-installer.ps1
       - name: Compress staging files for final installer assembly
         if: always()
         shell: pwsh

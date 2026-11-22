@@ -27,7 +27,7 @@ Item {
         { id: "agents", title: qsTr("AI agents"), icon: Icons.terminal, subtitle: qsTr("Assistants that use your devices") },
         { id: "storage", title: qsTr("Storage & Privacy"), icon: Icons.clipboardList, subtitle: qsTr("History, caches & retention") },
         { id: "connection", title: qsTr("Connection & About"), icon: Icons.wifi, subtitle: qsTr("Doctor, Wake-on-LAN, API & version") },
-        { id: "support", title: qsTr("Community"), icon: Icons.heart, subtitle: qsTr("Discord, news and support") },
+        { id: "support", title: qsTr("Community"), icon: Icons.heart, subtitle: qsTr("Telegram, Facebook and source code") },
         { id: "report", title: qsTr("Report a problem"), icon: Icons.warning, subtitle: qsTr("Tell us what went wrong") }
     ]
 
@@ -4085,10 +4085,10 @@ Item {
                         width: parent.width
                         ListRow {
                             width: parent.width
-                            iconPath: Icons.brandDiscord
+                            iconPath: Icons.openExternal
                             iconFilled: true
-                            title: qsTr("Discord")
-                            description: qsTr("Our server. Ask questions, share ideas and try new builds with others.")
+                            title: qsTr("Telegram")
+                            description: qsTr("Eslam Elbarbary applications and updates.")
                             Button {
                                 objectName: "discordButton"
                                 variant: "tonal"
@@ -4100,10 +4100,10 @@ Item {
                         Divider { width: parent.width }
                         ListRow {
                             width: parent.width
-                            iconPath: Icons.brandX
+                            iconPath: Icons.openExternal
                             iconFilled: true
-                            title: "𝕏"
-                            description: qsTr("Follow me. I post what's coming to Barbary Link and other things I make.")
+                            title: qsTr("Facebook")
+                            description: qsTr("Eslam Elbarbary on Facebook.")
                             Button {
                                 variant: "tonal"
                                 size: "sm"
@@ -4117,7 +4117,7 @@ Item {
                             iconPath: Icons.brandGitHub
                             iconFilled: true
                             title: qsTr("GitHub")
-                            description: qsTr("Source code, issues and releases.")
+                            description: qsTr("Modified source and licenses. Based on NectarLink, with original notices retained.")
                             Button {
                                 variant: "tonal"
                                 size: "sm"
@@ -4129,8 +4129,8 @@ Item {
                         ListRow {
                             width: parent.width
                             iconPath: Icons.heart
-                            title: qsTr("Support Barbary Link")
-                            description: qsTr("Barbary Link is free and open source. If it makes your days a little easier, you can help keep it going. Thank you!")
+                            title: qsTr("Contact Eslam Elbarbary")
+                            description: qsTr("This independent fork is free and open source. Contact through Telegram.")
                             Button {
                                 objectName: "supportButton"
                                 variant: "tonal"

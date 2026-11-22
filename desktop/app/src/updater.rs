@@ -371,6 +371,8 @@ struct Asset {
 
 /// The newest build for this install's channel, if it's newer than this one.
 fn latest() -> Result<Option<Update>, String> {
+    // All GUI, command-line and elevated paths must respect fork isolation.
+    if !can_update() { return Ok(None); }
     latest_for(channel(), env!("CARGO_PKG_VERSION"))
 }
 
@@ -664,6 +666,7 @@ fn task_registered() -> bool {
 /// Blocking. Returns what went wrong, in words for the user. On success the
 /// app is about to quit for the installer.
 pub fn install(progress: impl FnMut(u64, u64)) -> Result<(), String> {
+    if !can_update() { return Err("Barbary Link updates are installed manually.".into()); }
     let update = available().ok_or("There's no update to install.")?;
     let staged = stage(&update, progress).map_err(|e| {
         tracing::warn!(error = %e, "update download failed");
@@ -1457,6 +1460,12 @@ impl Clone for Release {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn barbary_fork_has_no_automatic_update_feed() {
+        assert!(!super::can_update());
+        assert!(super::latest().unwrap().is_none());
+    }
+
 
     #[test]
     fn notes_only_open_on_the_projects_page() {
