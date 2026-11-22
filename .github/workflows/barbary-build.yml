@@ -1,13 +1,21 @@
 name: Barbary Link build
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Build target
+        required: true
+        default: all
+        type: choice
+        options: [all, android, windows]
 permissions:
   contents: read
 concurrency:
-  group: barbary-link-build
+  group: barbary-link-build-${{ inputs.target || 'all' }}
   cancel-in-progress: false
 jobs:
   android:
+    if: inputs.target != 'windows'
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
@@ -18,10 +26,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - name: Install exact Android and Rust toolchains
+      - name: Install exact Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd
+        with:
+          cmdline-tools-version: '16111833'
+          packages: 'platforms;android-37.0 ndk;30.0.16248370 build-tools;37.0.0'
+      - name: Install exact Rust toolchain
         shell: bash
         run: |
-          sdkmanager 'platforms;android-37.0' 'ndk;30.0.16248370' 'build-tools;36.0.0'
           rustup show active-toolchain || rustup toolchain install
           rustup target add aarch64-linux-android
           cargo install cargo-ndk --locked
@@ -45,6 +57,7 @@ jobs:
             android/app/build/outputs/bundle/release/*.aab
             android/app/build/test-results/testReleaseUnitTest/*.xml
   windows:
+    if: inputs.target != 'android'
     runs-on: windows-latest
     timeout-minutes: 90
     env:
