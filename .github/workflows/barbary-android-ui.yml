@@ -1,0 +1,65 @@
+name: Barbary Link Android UI validation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: barbary-link-android-ui-validation
+  cancel-in-progress: false
+jobs:
+  android-ui:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      CARGO_BUILD_JOBS: '2'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Require standard-runner KVM
+        shell: bash
+        run: |
+          test -c /dev/kvm || { echo 'KVM is unavailable; no paid runner fallback is allowed.'; exit 1; }
+          printf '%s\n' 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Install Android toolchains
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd
+        with:
+          cmdline-tools-version: '16111833'
+          packages: 'platforms;android-37.0 ndk;30.0.16248370 build-tools;37.0.0'
+      - name: Compile release UI test variant
+        working-directory: android
+        shell: bash
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustup target add x86_64-linux-android
+          cargo install cargo-ndk --locked
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease :app:validateSigningDebug -Pnectarlink.abis=x86_64 '-Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8' --no-daemon --console=plain
+      - name: Apply disposable CI test signature
+        shell: bash
+        run: |
+          mkdir -p target/android-ui
+          apk=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          "$ANDROID_HOME/build-tools/37.0.0/apksigner" sign --ks "$HOME/.android/debug.keystore" --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --out target/android-ui-test.apk "$apk"
+          "$ANDROID_HOME/build-tools/37.0.0/apksigner" verify target/android-ui-test.apk
+          "$ANDROID_HOME/build-tools/37.0.0/aapt2" dump badging target/android-ui-test.apk > target/android-ui/package-metadata.txt
+      - name: Run release UI smoke test on Android API 35
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          disable-animations: true
+          emulator-boot-timeout: 240
+          script: python3 scripts/android-ui-smoke.py
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: android-ui-validation
+          retention-days: 1
+          if-no-files-found: warn
+          path: target/android-ui/**
