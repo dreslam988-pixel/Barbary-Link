@@ -42,11 +42,11 @@ jobs:
       - name: Compile unsigned APK and AAB
         working-directory: android
         shell: bash
-        run: ./gradlew :app:assembleRelease :app:bundleRelease -Pnectarlink.abis=arm64-v8a,armeabi-v7a --no-daemon --console=plain
+        run: ./gradlew :app:assembleRelease :app:bundleRelease -Pnectarlink.abis=arm64-v8a,armeabi-v7a '-Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8' --no-daemon --console=plain
       - name: Android unit tests
         working-directory: android
         shell: bash
-        run: ./gradlew :app:testReleaseUnitTest -Pnectarlink.abis=arm64-v8a,armeabi-v7a --no-daemon --console=plain
+        run: ./gradlew :app:testReleaseUnitTest -Pnectarlink.abis=arm64-v8a,armeabi-v7a '-Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8' --no-daemon --console=plain
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -109,5 +109,5 @@ jobs:
           if-no-files-found: warn
           path: |
             target/Barbary-Link-windows-stage.zip
-            target/ui-check/**/screenshot.png
+            target/ui-check/**/*.png
             target/ui-check/**/stderr.txt
