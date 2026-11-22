@@ -53,6 +53,7 @@ jobs:
           api-level: 35
           target: default
           arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -skin 1080x1920 -dpi-device 440
           disable-animations: true
           emulator-boot-timeout: 240
           script: python3 scripts/android-ui-smoke.py
@@ -64,6 +65,7 @@ jobs:
           api-level: 30
           target: default
           arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -skin 1080x1920 -dpi-device 440
           disable-animations: true
           emulator-boot-timeout: 240
           script: python3 scripts/android-ui-smoke.py
@@ -73,4 +75,7 @@ jobs:
           name: android-ui-validation
           retention-days: 1
           if-no-files-found: warn
-          path: target/android-ui/**
+          path: |
+            target/android-ui/**
+            target/android-ui-test.apk
+            android/app/build/outputs/apk/debug/app-debug.apk

@@ -34,7 +34,12 @@ try:
   if any('ArabicFixtureActivity' in n for n in z.namelist()):raise RuntimeError('Debug fixture leaked into release')
  result['android_api']=int(adb('shell','getprop','ro.build.version.sdk').stdout.strip())
  assert result['android_api']==EXPECTED_API
- adb('shell','wm','size','1080x2400');adb('shell','wm','density','440')
+ # Let a fresh emulator finish applying its hardware display before overriding it.
+ time.sleep(8)
+ adb('shell','wm','size','1080x1920');adb('shell','wm','density','440')
+ adb('shell','settings','put','system','font_scale','1.0');time.sleep(4)
+ result['display_size']=adb('shell','wm','size').stdout.decode().strip()
+ result['display_density']=adb('shell','wm','density').stdout.decode().strip()
  adb('install','-r','target/android-ui-test.apk')
  if EXPECTED_API>=33:adb('shell','pm','grant',PACKAGE,'android.permission.POST_NOTIFICATIONS')
  adb('logcat','-c');adb('shell','monkey','-p',PACKAGE,'-c','android.intent.category.LAUNCHER','1');time.sleep(15)
